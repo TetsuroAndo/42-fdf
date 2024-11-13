@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/13 09:28:40 by teando           ###   ########.fr        #
+#    Updated: 2024/11/13 11:45:11 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ test: test.c
 
 push:
 	git add . && git status
-	git commit -m "makefile commit `date`"
+	git commit -m "makepush"
 	git push
 
 .PHONY: all clean fclean re bonus norm test
