@@ -1,3 +1,6 @@
 [submodule "libft"]
 	path = libs/libft
 	url = git@github.com:TetsuroAndo/42-libft.git
+[submodule "libs/minilibx"]
+	path = libs/minilibx
+	url = https://github.com/42Paris/minilibx-linux.git
