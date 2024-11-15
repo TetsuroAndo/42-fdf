@@ -4,3 +4,7 @@
 [submodule "libft"]
 	path = libs/libft
 	url = git@github.com:TetsuroAndo/42-libft.git
+[submodule "libs/get_next_line"]
+	path = libs/get_next_line
+	url = git@github.com:tetsuroando/42-get_next_line
+	branch = mandatory_part
