@@ -46,4 +46,6 @@ typedef struct
 // int		key_hook(int keycode, t_fdf *data);
 // void	free_fdf(t_fdf *data);
 
-char	*get_next_
+char	*get_next_line(int fd);
+
+#endif

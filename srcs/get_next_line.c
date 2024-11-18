@@ -68,4 +68,5 @@ char	*get_next_line(int fd)
 			return (free(r), NULL);
 		r[newline - r + 1] = '\0';
 	}
-	retur
+	return (r);
+}
