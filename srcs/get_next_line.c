@@ -6,107 +6,66 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 07:10:16 by teando            #+#    #+#             */
-/*   Updated: 2024/11/16 06:02:07 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/18 11:35:28 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "get_next_line.h"
 
-static char	*endfree_strndup(const char *s, size_t n)
+static ssize_t	read_buf_to_newline(char **r, char **newline, char **temp,
+		int fd)
 {
-	char	*r;
-	char	*r_head;
-	char	*s_head;
-	size_t	len;
-
-	len = 0;
-	while (len < n && s[len])
-		len++;
-	s_head = (char *)s;
-	r_head = (char *)malloc((len + 1) * sizeof(char));
-	if (r_head)
-	{
-		r = r_head;
-		while (len--)
-			*r++ = *s++;
-		*r = '\0';
-		free(s_head);
-	}
-	return (r_head);
-}
-
-static ssize_t	read_buf(char **buf, int fd)
-{
+	ssize_t	read_total;
 	ssize_t	size;
-
-	*buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!*buf)
-		return (-1);
-	size = read(fd, *buf, BUFFER_SIZE);
-	if (size <= 0)
-	{
-		free(*buf);
-		*buf = NULL;
-		return (size);
-	}
-	(*buf)[size] = '\0';
-	return (size);
-}
-
-static ssize_t	fetch_one_line(char **r, char **newline, char **saved, int fd)
-{
 	char	*buf;
-	char	*tmp;
-	ssize_t	code;
 
+	read_total = 0;
+	if (*r)
+		*newline = ft_strchr(*r, '\n');
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (-1);
 	while (!*newline)
 	{
-		code = read_buf(&buf, fd);
-		if (code <= 0)
-			return (code);
-		tmp = ft_strjoin(*r, buf);
-		free(buf);
-		if (!tmp)
-			return (-1);
+		size = read(fd, buf, BUFFER_SIZE);
+		if (size <= 0)
+			return (free(buf), size);
+		buf[size] = '\0';
+		read_total += size;
+		*temp = ft_strjoin(*r, buf);
+		if (!*temp)
+			return (free(buf), -1);
 		free(*r);
-		*r = tmp;
-		*newline = ft_strchr(*r, '\n');
+		*r = *temp;
+		*newline = ft_strchr(*r + (read_total - size), '\n');
 	}
-	*saved = ft_strdup(*newline + 1);
-	if (!*saved)
-		return (-1);
-	tmp = endfree_strndup(*r, *newline - *r + 1);
-	if (!tmp)
-		return (-1);
-	*r = tmp;
-	return (1);
+	return (free(buf), read_total);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*saved;
+	static char	*saved[FD_MAX];
 	char		*newline;
+	char		*temp;
 	char		*r;
-	ssize_t		code;
+	ssize_t		read_size;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FD_MAX)
 		return (NULL);
-	if (saved)
-		newline = ft_strchr(saved, '\n');
-	else
-		newline = NULL;
-	r = saved;
-	code = fetch_one_line(&r, &newline, &saved, fd);
-	if (code <= 0 && r && *r)
+	r = saved[fd];
+	newline = NULL;
+	read_size = read_buf_to_newline(&r, &newline, &temp, fd);
+	if (read_size == -1)
+		return (free(r), free(saved[fd]), NULL);
+	if (read_size == 0)
+		saved[fd] = NULL;
+	if (r && !*r)
+		return (free(r), NULL);
+	if (newline)
 	{
-		if (code == -1 && saved != r)
-			free(saved);
-		saved = NULL;
+		saved[fd] = ft_strdup(newline + 1);
+		if (!saved[fd])
+			return (free(r), NULL);
+		r[newline - r + 1] = '\0';
 	}
-	if (code == -1 || (r && !*r))
-	{
-		free(r);
-		r = NULL;
-	}
-	return (r);
-}
+	retur
