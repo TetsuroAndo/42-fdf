@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 02:31:11 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/21 08:00:00 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	line(t_dot a, t_dot b, t_dot *param)
 
 	step_x = b.x - a.x;
 	step_y = b.y - a.y;
-	max = MAX(fmodule(step_x), fmodule(step_y));
+	max = ft_max(fmodule(step_x), fmodule(step_y));
 	step_x /= max;
 	step_y /= max;
 	color = (b.z || a.z) ? 0xfc0345 : 0xBBFAFF;

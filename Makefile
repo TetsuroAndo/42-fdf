@@ -6,46 +6,65 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/20 05:14:56 by teando           ###   ########.fr        #
+#    Updated: 2024/11/21 08:06:48 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= fdf
 CC			:= cc
+FRAMEWORKS	:= -lmlx -lXext -lX11 -lm
 CFLAGS		:= -Wall -Wextra -Werror
 ROOT_DIR	:= .
 OUT_DIR		:= $(ROOT_DIR)/objs
 INCS_DIR	:= $(ROOT_DIR)/incs
-LIBFT_H		:= libft.h
-IDFLAGS		:= -I$(INCS_DIR)
+LIBFT_DIR	:= $(ROOT_DIR)/libs/libft
+LIBFT		:= $(LIBFT_DIR)/libft.a
+MLX_DIR		:= $(ROOT_DIR)/libs/minilibx
+MLX			:= $(MLX_DIR)/libmlx.a
+
+IDFLAGS		:= -I$(INCS_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 SRCS 		:= \
-	$(addprefix $(ROOT_DIR)/, \
-		$(addprefix srcs/, \
-		) \
+	$(addprefix srcs/, \
+		deal_key.c \
+		draw.c \
+		error_handler.c \
+		fdf.c \
+		read_map.c \
 	)
+
 OBJS		:= $(addprefix $(OUT_DIR)/, $(SRCS:.c=.o))
+DEPS		:= $(OBJS:.o=.d)
 
 ifeq ($(DEBUG), 1)
-CFLAGS		+= -g
+	CFLAGS	+= -g -fsanitize=address
 else
-CFLAGS		+= -O2
+	CFLAGS	+= -O2
 endif
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	ar rc $@ $^
+$(NAME): $(LIBFT) $(MLX) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(MLX_DIR) $(FRAMEWORKS) -o $@
 
-$(OUT_DIR)/%.o: %.c $(LIBFT_H)
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
+
+$(MLX):
+	$(MAKE) -C $(MLX_DIR)
+
+$(OUT_DIR)/%.o: $(ROOT_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) -c $(CFLAGS) -MMD -MP $(IDFLAGS) $< -o $@
+	$(CC) $(CFLAGS) -MMD -MP $(IDFLAGS) -c $< -o $@
 
 clean:
+	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(MLX_DIR) clean
 	rm -rf $(OUT_DIR)
 
 fclean: clean
-	rm -f $(NAME) $(NAME_SO) a.out
+	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -f $(NAME)
 
 re: fclean all
 
@@ -55,15 +74,10 @@ sub:
 sub-update:
 	git submodule update --remote
 
-norm: $(LIBFT_H) $(INCS_DIR) $(SRCS)
-	@norminette $^
+norm:
+	@norminette $(SRCS) $(INCS_DIR)/*.h
 
-test: test.c
-	$(CC) -g -fsanitize=address $< -o $@ -I. -Wl,-rpath . -L. -lft -lm
+debug:
+	$(MAKE) DEBUG=1
 
-push:
-	git add . && git status
-	git commit -m "makepush"
-	git push
-
-.PHONY: all clean fclean re bonus norm test
+.PHONY: all clean fclean re sub sub-update norm debug

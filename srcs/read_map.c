@@ -6,12 +6,13 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:31 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 07:07:45 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/21 08:02:16 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <errno.h>
+#include <string.h>
 
 static int	open_file(char *file_name)
 {
@@ -23,7 +24,7 @@ static int	open_file(char *file_name)
 	return (fd);
 }
 
-static void	parse_map_size(int fd, int *x, int *y)
+static void	parse_map_size(int fd, size_t *x, size_t *y)
 {
 	char	*line;
 
@@ -45,7 +46,6 @@ static void	parse_map_size(int fd, int *x, int *y)
 static t_dot	**memory_allocete(char *file_name)
 {
 	t_dot	**new;
-	char	*line;
 	int		fd;
 	size_t	x;
 	size_t	y;
