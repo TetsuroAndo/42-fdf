@@ -6,33 +6,28 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:12:55 by teando            #+#    #+#             */
-/*   Updated: 2024/11/18 06:24:24 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/20 07:36:16 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int argc, char **argv)
+static void	set_default(t_dot *param)
 {
-	t_fdf	*data;
+	param->mlx_ptr = mlx_init();
+	param->win_ptr = mlx_new_window(param->mlx_ptr, 2000, 1000, "FDF");
+}
 
-	if (argc != 2)
-	{
-		ft_dprintf(STDERR_FILENO, "Usage: %s <mapfile.fdf>\n", argv[0]);
-		return (1);
-	}
-	data = init_fdf();
-	if (!data)
-		return (1);
-	if (!read_map(data, argv[1]))
-	{
-		free_fdf(data);
-		return (1);
-	}
-	setup_mlx(data);
-	draw(data);
-	mlx_hook(data->win, 17, 0, close_window, data);
-	mlx_key_hook(data->win, key_hook, data);
-	mlx_loop(data->mlx);
+int	main(int ac, char **av)
+{
+	t_dot	**matrix;
+
+	if (ac != 2)
+		return ((ft_dprintf(2, "Usage: %s <map_file.fdf>\n", av[0])));
+	matrix = read_map(*++av);
+	set_default(&PRM);
+	draw(matrix);
+	mlx_key_hook(PRM.win_ptr, deal_key, matrix);
+	mlx_loop(PRM.mlx_ptr);
 	return (0);
 }

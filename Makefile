@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/13 11:45:11 by teando           ###   ########.fr        #
+#    Updated: 2024/11/20 05:14:56 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,12 @@ fclean: clean
 	rm -f $(NAME) $(NAME_SO) a.out
 
 re: fclean all
+
+sub:
+	git submodule update --init --recursive
+
+sub-update:
+	git submodule update --remote
 
 norm: $(LIBFT_H) $(INCS_DIR) $(SRCS)
 	@norminette $^

@@ -6,7 +6,14 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:13:08 by teando            #+#    #+#             */
-/*   Updated: 2024/11/13 08:13:10 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/20 05:09:13 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
+
+void	ft_error(char *msg)
+{
+	ft_dprintf(STDERR_FILENO, "%s\n", msg);
+	exit(EXIT_FAILURE);
+}
