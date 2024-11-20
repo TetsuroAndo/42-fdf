@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/21 08:06:48 by teando           ###   ########.fr        #
+#    Updated: 2024/11/21 08:07:44 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ endif
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(MLX_DIR) $(FRAMEWORKS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -L$(MLX_DIR) $(FRAMEWORKS) -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -75,9 +75,11 @@ sub-update:
 	git submodule update --remote
 
 norm:
-	@norminette $(SRCS) $(INCS_DIR)/*.h
+	@norminette $(SRCS) $(INCS_DIR)
 
 debug:
 	$(MAKE) DEBUG=1
 
 .PHONY: all clean fclean re sub sub-update norm debug
+
+-include $(DEPS)
