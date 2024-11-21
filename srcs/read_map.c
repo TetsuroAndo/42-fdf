@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:31 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 12:30:24 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:07:00 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,18 @@ t_dot	**read_map(char *file_name)
 	t_dot	**matrix_of_dots;
 	size_t	x;
 	size_t	y;
+	size_t	i;
 	int		fd;
 	char	*read_line;
 	int		expected_x;
 
 	matrix_of_dots = memory_allocate(file_name, &x, &y);
-	y = 0;
 	fd = open_file(file_name);
 	read_line = get_next_line(fd);
-	while (read_line)
+	i = -1;
+	while (read_line && ++i < y)
 	{
-		if (!get_dots_from_line(read_line, matrix_of_dots, y++, x))
+		if (!get_dots_from_line(read_line, matrix_of_dots, i, x))
 			error_cleanup_memory("Error: Map width does not match",
 				matrix_of_dots, y, fd);
 		read_line = get_next_line(fd);
