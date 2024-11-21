@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handler.c                                    :+:      :+:    :+:   */
+/*   open_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 08:13:08 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 09:50:12 by teando           ###   ########.fr       */
+/*   Created: 2024/11/21 09:17:34 by teando            #+#    #+#             */
+/*   Updated: 2024/11/21 09:56:00 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	ft_error(char *msg)
+int	open_file(char *file_name)
 {
-	ft_dprintf(STDERR_FILENO, "%s\n", msg);
-	exit(EXIT_FAILURE);
+	int	fd;
+
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+		ft_error(strerror(errno));
+	return (fd);
 }

@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/21 08:07:44 by teando           ###   ########.fr        #
+#    Updated: 2024/11/21 09:18:45 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS 		:= \
 		draw.c \
 		error_handler.c \
 		fdf.c \
+		open_map.c \
 		read_map.c \
 	)
 
@@ -68,10 +69,14 @@ fclean: clean
 
 re: fclean all
 
+reb:
+	rm -rf $(OUT_DIR) $(NAME)
+	$(MAKE) all
+	
 sub:
 	git submodule update --init --recursive
 
-sub-update:
+subup:
 	git submodule update --remote
 
 norm:
