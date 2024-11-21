@@ -6,14 +6,14 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/21 09:18:45 by teando           ###   ########.fr        #
+#    Updated: 2024/11/21 11:42:19 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= fdf
 CC			:= cc
 FRAMEWORKS	:= -lmlx -lXext -lX11 -lm
-CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= #-Wall -Wextra -Werror
 ROOT_DIR	:= .
 OUT_DIR		:= $(ROOT_DIR)/objs
 INCS_DIR	:= $(ROOT_DIR)/incs
