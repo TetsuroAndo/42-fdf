@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   deal_key.c                                         :+:      :+:    :+:   */
+/*   set_param.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/20 07:36:32 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 11:12:59 by teando           ###   ########.fr       */
+/*   Created: 2024/11/21 11:14:32 by teando            #+#    #+#             */
+/*   Updated: 2024/11/21 11:14:42 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		deal_key(int key, t_dot **matrix)
+void    set_param(t_dot *a, t_dot *b, t_dot *param)
 {
-    if (key == 53)
+    if (param->is_isometric)
     {
-        mlx_destroy_window(PRM.mlx_ptr, PRM.win_ptr);
-        free(matrix);
-        exit(0);
+        isometric(a, param->angle);
+        isometric(b, param->angle);
     }
-    return (0);
 }

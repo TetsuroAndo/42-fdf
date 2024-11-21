@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:31 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 10:08:05 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/21 11:16:35 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	error_cleanup_memory(char *msg, t_dot **matrix, size_t y, int fd)
 		close(fd);
 	while (y > 0)
 		free(matrix[--y]);
-	free(matrix);
+    if (matrix)
+	    free(matrix);
 	ft_error(msg);
 }
 
