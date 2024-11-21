@@ -6,18 +6,22 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:12:55 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 12:58:31 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/21 16:53:30 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	set_default(t_dot *param)
+void	set_default(t_dot *param)
 {
+	param->scale = 20;
+	param->z_scale = 1;
 	param->is_isometric = 1;
 	param->angle = 0.523599;
-	param->win_x = 1000;
+	param->win_x = 2000;
 	param->win_y = 1000;
+	param->shift_x = param->win_x / 3;
+	param->shift_y = param->win_y / 3;
 	param->mlx_ptr = mlx_init();
 	param->win_ptr = mlx_new_window(param->mlx_ptr, param->win_x, param->win_y,
 			"FDF");
