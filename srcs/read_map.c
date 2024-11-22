@@ -6,120 +6,129 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:31 by teando            #+#    #+#             */
-/*   Updated: 2024/11/21 13:07:00 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/22 16:46:29 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	error_cleanup_memory(char *msg, t_dot **matrix, size_t y, int fd)
-{
-	if (fd > 2)
-		close(fd);
-	while (y > 0)
-		free(matrix[--y]);
-	if (matrix)
-		free(matrix);
-	ft_error(msg);
-}
-
-static void	parse_map_size(int fd, size_t *x, size_t *y)
+static void	parse_map_size(int fd, size_t *width, size_t *height)
 {
 	char	*line;
-	size_t	sml_x;
+	size_t	line_width;
+	size_t	min_width;
 
-	*x = 0;
-	*y = 0;
-	sml_x = INT_MAX;
+	*height = 0;
+	min_width = SIZE_MAX;
 	line = get_next_line(fd);
-	if (!line)
-		ft_error("Error: empty file or read error.");
-	while (line)
+	while (line != NULL)
 	{
-		*x = ft_count_words(line, ' ');
-		if (*x < sml_x)
-			sml_x = *x;
+		line_width = ft_count_words(line, ' ');
+		if (line_width < min_width)
+			min_width = line_width;
 		free(line);
-		(*y)++;
+		(*height)++;
 		line = get_next_line(fd);
 	}
-	*x = sml_x;
+	*width = min_width;
+	if (*width == 0 || *height == 0)
+		ft_error("Error: Invalid map size");
 }
 
-static t_dot	**memory_allocate(char *file_name, size_t *x, size_t *y)
+static t_point	**allocate_points(size_t width, size_t height)
 {
-	t_dot	**new;
-	int		fd;
+	t_point	**points;
 	size_t	i;
 
-	fd = open_file(file_name);
-	parse_map_size(fd, x, y);
-	new = (t_dot **)malloc(sizeof(t_dot *) * (*y + 1));
-	if (!new)
-		error_cleanup_memory("Error: Memory allocation failed.", NULL, 0, fd);
-	i = -1;
-	while (++i < *y)
+	points = (t_point **)malloc(sizeof(t_point *) * height);
+	if (!points)
+		ft_error("Error: Memory allocation failed");
+	i = 0;
+	while (i < height)
 	{
-		new[i] = (t_dot *)malloc(sizeof(t_dot) * (*x + 1));
-		if (!new[i])
-			error_cleanup_memory("Error: Memory allocation failed.", new, i,
-				fd);
-	}
-	close(fd);
-	return (new);
-}
-
-static int	get_dots_from_line(char *line, t_dot **matrix_of_dots, size_t y,
-		size_t max_x)
-{
-	char	**dots;
-	size_t	x;
-
-	if (!line || !matrix_of_dots)
-		return (1);
-	dots = ft_split(line, ' ');
-	if (!dots)
-		return (free(line), 0);
-	x = 0;
-	while (dots[x])
-	{
-		if (x < max_x)
+		points[i] = (t_point *)malloc(sizeof(t_point) * width);
+		if (!points[i])
 		{
-			matrix_of_dots[y][x].z = ft_atoi(dots[x]);
-			matrix_of_dots[y][x].x = x;
-			matrix_of_dots[y][x].y = y;
-			matrix_of_dots[y][x].is_last = 0;
+			while (i > 0)
+				free(points[--i]);
+			free(points);
+			ft_error("Error: Memory allocation failed");
 		}
-		free(dots[x++]);
+		i++;
 	}
-	matrix_of_dots[y][--x].is_last = 1;
-	free(dots);
-	free(line);
-	return (x + 1);
+	return (points);
 }
 
-t_dot	**read_map(char *file_name)
+static void	parse_line(char *line, t_point *points, size_t width, size_t y)
 {
-	t_dot	**matrix_of_dots;
+	char	**values;
 	size_t	x;
-	size_t	y;
-	size_t	i;
-	int		fd;
-	char	*read_line;
-	int		expected_x;
+	char	*z_str;
 
-	matrix_of_dots = memory_allocate(file_name, &x, &y);
-	fd = open_file(file_name);
-	read_line = get_next_line(fd);
-	i = -1;
-	while (read_line && ++i < y)
+	values = ft_split(line, ' ');
+	if (!values)
+		ft_error("Error: Split failed");
+	x = -1;
+	while (++x < width && values[x])
 	{
-		if (!get_dots_from_line(read_line, matrix_of_dots, i, x))
-			error_cleanup_memory("Error: Map width does not match",
-				matrix_of_dots, y, fd);
-		read_line = get_next_line(fd);
+		points[x].x = x;
+		points[x].y = y;
+		if (ft_strchr(values[x], ','))
+			z_str = ft_strndup(values[x], ft_strchr(values[x], ',')
+					- values[x]);
+		else
+			z_str = ft_strdup(values[x]);
+		points[x].z = ft_atoi(z_str);
+		free(z_str);
+		points[x].color = parse_color(values[x]);
 	}
-	matrix_of_dots[y] = NULL;
+	x = 0;
+	while (values[x])
+		free(values[x++]);
+	free(values);
+}
+
+static void	find_z_range(t_point **points, size_t width, size_t height,
+		int *min_z, int *max_z)
+{
+	size_t x, y;
+	*min_z = INT_MAX;
+	*max_z = INT_MIN;
+	y = -1;
+	while (++y < height)
+	{
+		x = -1;
+		while (++x < width)
+		{
+			if (points[y][x].z < *min_z)
+				*min_z = points[y][x].z;
+			if (points[y][x].z > *max_z)
+				*max_z = points[y][x].z;
+		}
+	}
+}
+
+t_map	read_map(char *file_name)
+{
+	t_map	map;
+	int		fd;
+	char	*line;
+	size_t	y;
+
+	fd = open_file(file_name);
+	parse_map_size(fd, &map.width, &map.height);
 	close(fd);
-	return (matrix_of_dots);
+	map.points = allocate_points(map.width, map.height);
+	fd = open_file(file_name);
+	y = 0;
+	line = get_next_line(fd);
+	while (y < map.height && line != NULL)
+	{
+		parse_line(line, map.points[y], map.width, y);
+		free(line);
+		y++;
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (map);
 }
