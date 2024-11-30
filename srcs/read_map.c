@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:31 by teando            #+#    #+#             */
-/*   Updated: 2024/11/27 21:15:52 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/30 21:21:05 by teando           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -77,6 +77,13 @@ static void parse_line(char *line, t_point *points, size_t width, size_t y)
 			z_str = ft_strndup(values[x], ft_strchr(values[x], ',') - values[x]);
 		else
 			z_str = ft_strdup(values[x]);
+		if (!z_str)
+		{
+			while (values[x])
+				free(values[x++]);
+			free(values);
+			ft_error("Error: Memory allocation failed");
+		}
 		points[x].z = ft_atoi(z_str);
 		free(z_str);
 		points[x].color = parse_color(values[x]);

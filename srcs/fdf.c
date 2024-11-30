@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
@@ -6,22 +6,22 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:12:55 by teando            #+#    #+#             */
-/*   Updated: 2024/11/22 15:54:15 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/30 21:34:15 by teando           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "fdf.h"
 
-void	init_mlx(t_fdf *fdf)
+void init_mlx(t_fdf *fdf)
 {
 	fdf->window.mlx_ptr = mlx_init();
 	fdf->window.win_ptr = mlx_new_window(fdf->window.mlx_ptr, 1000, 1000,
-			"FDF");
+										 "FDF");
 }
 
-t_fdf	*init_fdf(void)
+t_fdf *init_fdf(void)
 {
-	t_fdf	*fdf;
+	t_fdf *fdf;
 
 	fdf = (t_fdf *)malloc(sizeof(t_fdf));
 	if (!fdf)
@@ -36,9 +36,9 @@ t_fdf	*init_fdf(void)
 	return (fdf);
 }
 
-int	main(int ac, char **av)
+int main(int ac, char **av)
 {
-	t_fdf	*fdf;
+	t_fdf *fdf;
 
 	if (ac != 2)
 		return ((ft_dprintf(2, "Usage: %s <map_file.fdf>\n", av[0])));
@@ -56,6 +56,5 @@ int	main(int ac, char **av)
 	mlx_hook(fdf->window.win_ptr, 17, 0, close_window, fdf);
 	mlx_loop(fdf->window.mlx_ptr);
 	free_fdf(fdf);
-	return (0);
 	return (0);
 }
