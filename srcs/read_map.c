@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
@@ -6,17 +6,17 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:31 by teando            #+#    #+#             */
-/*   Updated: 2024/11/22 16:46:29 by teando           ###   ########.fr       */
+/*   Updated: 2024/11/27 21:15:52 by teando           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "fdf.h"
 
-static void	parse_map_size(int fd, size_t *width, size_t *height)
+static void parse_map_size(int fd, size_t *width, size_t *height)
 {
-	char	*line;
-	size_t	line_width;
-	size_t	min_width;
+	char *line;
+	size_t line_width;
+	size_t min_width;
 
 	*height = 0;
 	min_width = SIZE_MAX;
@@ -35,10 +35,10 @@ static void	parse_map_size(int fd, size_t *width, size_t *height)
 		ft_error("Error: Invalid map size");
 }
 
-static t_point	**allocate_points(size_t width, size_t height)
+static t_point **allocate_points(size_t width, size_t height)
 {
-	t_point	**points;
-	size_t	i;
+	t_point **points;
+	size_t i;
 
 	points = (t_point **)malloc(sizeof(t_point *) * height);
 	if (!points)
@@ -59,11 +59,11 @@ static t_point	**allocate_points(size_t width, size_t height)
 	return (points);
 }
 
-static void	parse_line(char *line, t_point *points, size_t width, size_t y)
+static void parse_line(char *line, t_point *points, size_t width, size_t y)
 {
-	char	**values;
-	size_t	x;
-	char	*z_str;
+	char **values;
+	size_t x;
+	char *z_str;
 
 	values = ft_split(line, ' ');
 	if (!values)
@@ -74,8 +74,7 @@ static void	parse_line(char *line, t_point *points, size_t width, size_t y)
 		points[x].x = x;
 		points[x].y = y;
 		if (ft_strchr(values[x], ','))
-			z_str = ft_strndup(values[x], ft_strchr(values[x], ',')
-					- values[x]);
+			z_str = ft_strndup(values[x], ft_strchr(values[x], ',') - values[x]);
 		else
 			z_str = ft_strdup(values[x]);
 		points[x].z = ft_atoi(z_str);
@@ -88,40 +87,59 @@ static void	parse_line(char *line, t_point *points, size_t width, size_t y)
 	free(values);
 }
 
-static void	find_z_range(t_point **points, size_t width, size_t height,
-		int *min_z, int *max_z)
+static void find_z_range(t_map *map)
 {
-	size_t x, y;
-	*min_z = INT_MAX;
-	*max_z = INT_MIN;
+	size_t x;
+	size_t y;
+
+	map->min_z = INT_MAX;
+	map->max_z = INT_MIN;
 	y = -1;
-	while (++y < height)
+	while (++y < map->height)
 	{
 		x = -1;
-		while (++x < width)
+		while (++x < map->width)
 		{
-			if (points[y][x].z < *min_z)
-				*min_z = points[y][x].z;
-			if (points[y][x].z > *max_z)
-				*max_z = points[y][x].z;
+			if (map->points[y][x].z < map->min_z)
+				map->min_z = map->points[y][x].z;
+			if (map->points[y][x].z > map->max_z)
+				map->max_z = map->points[y][x].z;
 		}
 	}
 }
 
-t_map	read_map(char *file_name)
+static void apply_default_colors(t_map *map)
 {
-	t_map	map;
-	int		fd;
-	char	*line;
-	size_t	y;
+	size_t x;
+	size_t y;
+
+	y = -1;
+	while (++y < map->height)
+	{
+		x = -1;
+		while (++x < map->width)
+		{
+			if (map->points[y][x].color == -1)
+				map->points[y][x].color = get_default_color(
+					map->points[y][x].z, map->min_z, map->max_z);
+		}
+	}
+}
+
+t_map read_map(char *file_name)
+{
+	t_map map;
+	int fd;
+	char *line;
+	size_t y;
 
 	fd = open_file(file_name);
 	parse_map_size(fd, &map.width, &map.height);
 	close(fd);
 	map.points = allocate_points(map.width, map.height);
 	fd = open_file(file_name);
-	y = 0;
 	line = get_next_line(fd);
+	y = 0;
 	while (y < map.height && line != NULL)
 	{
 		parse_line(line, map.points[y], map.width, y);
@@ -130,5 +148,7 @@ t_map	read_map(char *file_name)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	find_z_range(&map);
+	apply_default_colors(&map);
 	return (map);
 }
