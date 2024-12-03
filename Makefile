@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/11/22 12:13:38 by teando           ###   ########.fr        #
+#    Updated: 2024/12/03 23:32:58 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,13 +26,14 @@ IDFLAGS		:= -I$(INCS_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 SRCS 		:= \
 	$(addprefix srcs/, \
-		deal_key.c \
-		draw.c \
-		error_handler.c \
 		fdf.c \
-		open_map.c \
-		read_map.c \
-		ch_wd.c \
+		error_handler.c \
+		$(addprefix set_data/, \
+			open_map.c \
+			read_map.c \
+			parse_dot.c \
+			color.c \
+		) \
 	)
 
 OBJS		:= $(addprefix $(OUT_DIR)/, $(SRCS:.c=.o))
