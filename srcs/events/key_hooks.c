@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_param.c                                        :+:      :+:    :+:   */
+/*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 11:14:32 by teando            #+#    #+#             */
-/*   Updated: 2024/12/03 23:17:35 by teando           ###   ########.fr       */
+/*   Created: 2024/12/05 00:46:48 by teando            #+#    #+#             */
+/*   Updated: 2024/12/05 06:21:51 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	set_param(void)
+int	key_press(int keycode, t_fdf *fdf)
 {
+	if (keycode == ESC)
+		close_window(fdf);
+	return (0);
 }

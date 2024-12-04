@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:43:44 by teando            #+#    #+#             */
-/*   Updated: 2024/12/03 23:38:58 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 05:19:22 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,18 @@ int	parse_color(const char *str)
  * @param percentage 補間のパーセンテージ（0.0から1.0）
  * @return int 補間された色
  */
-static int	interpolate_color(int color1, int color2, double percentage)
+int	interpolate_color(int color1, int color2, double percentage)
 {
 	int	r;
 	int	g;
 	int	b;
-	int	r2;
-	int	g2;
-	int	b2;
 
 	r = (color1 >> 16) & 0xFF;
 	g = (color1 >> 8) & 0xFF;
 	b = color1 & 0xFF;
-	r2 = (color2 >> 16) & 0xFF;
-	g2 = (color2 >> 8) & 0xFF;
-	b2 = color2 & 0xFF;
-	r = r + (r2 - r) * percentage;
-	g = g + (g2 - g) * percentage;
-	b = b + (b2 - b) * percentage;
+	r += ((color2 >> 16) & 0xFF - r) * percentage;
+	g += ((color2 >> 8) & 0xFF - g) * percentage;
+	b += ((color2 & 0xFF - b) * percentage);
 	return ((r << 16) | (g << 8) | b);
 }
 
@@ -108,36 +102,51 @@ static int	interpolate_color(int color1, int color2, double percentage)
  */
 int	get_default_color(int z, int min_z, int max_z)
 {
-	double	percentage;
-	int		color1;
-	int		color2;
+	const int	colors[] = {0x0000FF, 0x00FF00, 0xFFFF00, 0xFFA500, 0xFF0000};
+	double		percentage;
+	int			idx;
 
 	if (min_z == max_z)
 		return (0xFFFFFF);
 	percentage = (double)(z - min_z) / (max_z - min_z);
-	if (percentage < 0.25)
-	{
-		color1 = 0x0000FF;
-		color2 = 0x00FF00;
-		percentage = percentage * 4;
-	}
-	else if (percentage < 0.5)
-	{
-		color1 = 0x00FF00;
-		color2 = 0xFFFF00;
-		percentage = (percentage - 0.25) * 4;
-	}
-	else if (percentage < 0.75)
-	{
-		color1 = 0xFFFF00;
-		color2 = 0xFFA500;
-		percentage = (percentage - 0.5) * 4;
-	}
-	else
-	{
-		color1 = 0xFFA500;
-		color2 = 0xFF0000;
-		percentage = (percentage - 0.75) * 4;
-	}
-	return (interpolate_color(color1, color2, percentage));
+	if (percentage >= 1.0)
+		return (0xFF0000);
+	idx = (int)(percentage * 4);
+	percentage = (percentage * 4) - idx;
+	return (interpolate_color(colors[idx], colors[idx + 1], percentage));
 }
+// int	get_default_color(int z, int min_z, int max_z)
+// {
+// 	double	percentage;
+// 	int		color1;
+// 	int		color2;
+
+// 	if (min_z == max_z)
+// 		return (0xFFFFFF);
+// 	percentage = (double)(z - min_z) / (max_z - min_z);
+// 	if (percentage < 0.25)
+// 	{
+// 		color1 = 0x0000FF;
+// 		color2 = 0x00FF00;
+// 		percentage = percentage * 4;
+// 	}
+// 	else if (percentage < 0.5)
+// 	{
+// 		color1 = 0x00FF00;
+// 		color2 = 0xFFFF00;
+// 		percentage = (percentage - 0.25) * 4;
+// 	}
+// 	else if (percentage < 0.75)
+// 	{
+// 		color1 = 0xFFFF00;
+// 		color2 = 0xFFA500;
+// 		percentage = (percentage - 0.5) * 4;
+// 	}
+// 	else
+// 	{
+// 		color1 = 0xFFA500;
+// 		color2 = 0xFF0000;
+// 		percentage = (percentage - 0.75) * 4;
+// 	}
+// 	return (interpolate_color(color1, color2, percentage));
+// }

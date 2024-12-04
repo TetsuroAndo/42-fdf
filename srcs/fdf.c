@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/03 23:30:07 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 06:44:46 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,6 @@ static t_fdf	*init_fdf(void)
 	if (!fdf)
 		ft_error("Failed to allocate memory for fdf");
 	return (fdf);
-}
-
-static void	free_fdf(t_fdf *fdf)
-{
-	size_t	i;
-
-	if (fdf)
-	{
-		if (fdf->map.points)
-		{
-			i = 0;
-			while (i < fdf->map.height)
-			{
-				free(fdf->map.points[i]);
-				i++;
-			}
-			free(fdf->map.points);
-		}
-		free(fdf);
-	}
 }
 
 void	print_map_data(t_map map)
@@ -69,19 +49,21 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return (ft_dprintf(2, "Usage: %s <map_file.fdf>\n", av[0]));
 	fdf = init_fdf();
-	if (!fdf)
-		return (1);
 	fdf->map = read_map(av[1]);
 	if (fdf->map.points == NULL)
 	{
 		free_fdf(fdf);
 		return (1);
 	}
-	ft_printf("Map loaded successfully. Dimensions: %dx%d\n", fdf->map.width,
-		fdf->map.height);
-	ft_printf("Z range: min=%d, max=%d\n", fdf->map.min_z, fdf->map.max_z);
-	ft_printf("\nMap data:\n");
-	print_map_data(fdf->map);
+	if (!init_window(fdf))
+	{
+		free_fdf(fdf);
+		return (1);
+	}
+	draw_map(fdf);
+	mlx_hook(fdf->window.win_ptr, CLOSE_WINDOW, 0, close_window, fdf);
+	mlx_key_hook(fdf->window.win_ptr, key_press, fdf);
+	mlx_loop(fdf->window.mlx_ptr);
 	free_fdf(fdf);
 	return (0);
 }
