@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 13:35:16 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:50:55 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ static void	draw_line_point(t_fdf *fdf, int x, int y, int next)
  */
 void	draw_map(t_fdf *fdf)
 {
-	int	x;
-	int	y;
+	size_t	x;
+	size_t	y;
 
 	ft_printf("Map dimensions: %d x %d\n", fdf->map.width, fdf->map.height);
 	fdf->shift_x = fdf->window.width / 2 - (fdf->map.width * fdf->scale) / 2;

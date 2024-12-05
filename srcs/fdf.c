@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 13:36:41 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:52:26 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,36 @@ static t_fdf	*init_fdf(void)
 	fdf = (t_fdf *)ft_calloc(1, sizeof(t_fdf));
 	if (!fdf)
 		ft_error("Failed to allocate memory for fdf");
-	fdf->scale = 30;
+	fdf->scale = 20;
 	fdf->z_scale = 1;
 	fdf->camera.angle = ISOMETRIC_ANGLE;
-	// fdf->shift_x = 200;
-	// fdf->shift_y = 100;
+	fdf->shift_x = 500;
+	fdf->shift_y = 500;
 	fdf->camera.is_isometric = 1;
 	fdf->window.width = 1200;
 	fdf->window.height = 800;
 	return (fdf);
 }
 
-static void	print_map_data(t_map map)
-{
-	int	y;
-	int	x;
+// static void	print_map_data(t_map map)
+// {
+// 	size_t	x;
+// 	size_t	y;
 
-	y = 0;
-	while (y < map.height)
-	{
-		x = 0;
-		while (x < map.width)
-		{
-			ft_printf("(%d,%d,%d,0x%X) ", map.points[y][x].x,
-				map.points[y][x].y, map.points[y][x].z, map.points[y][x].color);
-			x++;
-		}
-		ft_printf("\n");
-		y++;
-	}
-}
+// 	y = 0;
+// 	while (y < map.height)
+// 	{
+// 		x = 0;
+// 		while (x < map.width)
+// 		{
+// 			ft_printf("(%d,%d,%d,0x%X) ", map.points[y][x].x,
+// 				map.points[y][x].y, map.points[y][x].z, map.points[y][x].color);
+// 			x++;
+// 		}
+// 		ft_printf("\n");
+// 		y++;
+// 	}
+// }
 
 int	main(int ac, char **av)
 {

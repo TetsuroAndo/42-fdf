@@ -6,14 +6,14 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/12/05 06:44:34 by teando           ###   ########.fr        #
+#    Updated: 2024/12/05 17:53:06 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= fdf
 CC			:= cc
 FRAMEWORKS	:= -lmlx -lXext -lX11 -lm
-CFLAGS		:= #-Wall -Wextra -Werror
+CFLAGS		:= -Wall -Wextra -Werror
 ROOT_DIR	:= .
 OUT_DIR		:= $(ROOT_DIR)/objs
 INCS_DIR	:= $(ROOT_DIR)/incs
@@ -83,10 +83,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
-
-reb:
-	rm -rf $(OUT_DIR) $(NAME)
-	$(MAKE) all
 	
 sub:
 	git submodule update --init --recursive
