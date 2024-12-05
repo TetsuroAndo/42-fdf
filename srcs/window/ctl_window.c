@@ -6,12 +6,24 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 00:53:38 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 06:42:52 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 11:55:22 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+/**
+ * @brief ウィンドウにピクセルを描画する
+ *
+ * この関数は、指定された（x, y）座標位置に指定された色のピクセルを
+ * ウィンドウのイメージバッファに配置します。関数は描画を試みる前に、
+ * 座標がウィンドウの境界内にあるかどうかをチェックします。
+ *
+ * @param fdf ウィンドウ情報を含むfdf構造体へのポインタ
+ * @param x 描画するピクセルのx座標
+ * @param y 描画するピクセルのy座標
+ * @param color 16進数形式でのピクセルの色
+ */
 void	put_pixel(t_fdf *fdf, int x, int y, int color)
 {
 	char	*dst;
@@ -26,15 +38,6 @@ void	put_pixel(t_fdf *fdf, int x, int y, int color)
 
 int	close_window(t_fdf *fdf)
 {
-	if (fdf->window.img_ptr)
-		mlx_destroy_image(fdf->window.mlx_ptr, fdf->window.img_ptr);
-	if (fdf->window.win_ptr)
-		mlx_destroy_window(fdf->window.mlx_ptr, fdf->window.win_ptr);
-	if (fdf->window.mlx_ptr)
-	{
-		mlx_destroy_display(fdf->window.mlx_ptr);
-		free(fdf->window.mlx_ptr);
-	}
 	free_fdf(fdf);
 	exit(0);
 }

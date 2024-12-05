@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:13:12 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 06:44:23 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:39:25 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 
 # define ESC 65307
 # define CLOSE_WINDOW 17
+
+# define PI 3.14159265358979323846
+# define ISOMETRIC_ANGLE (PI / 4)
 
 typedef struct s_point
 {
@@ -103,7 +106,7 @@ int				interpolate_color(int color1, int color2, double percentage);
 
 /*** render ***/
 void			draw_map(t_fdf *fdf);
-void			isometric_projection(t_fdf *fdf, int *x, int *y, int z);
+void			isometric(t_fdf *fdf, int *x, int *y, int z);
 void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
 void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
 

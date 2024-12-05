@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 05:01:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 07:02:01 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 11:55:58 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	draw_line_low(t_fdf *fdf, t_point start, t_point end)
 		t = calculate_t(x, start.x, end.x);
 		color = interpolate_color(start.color, end.color, t);
 		put_pixel(fdf, x, l.y, color);
-		// ft_printf("Drawing pixel at (%d, %d), color=%X\n", x, l.y, color);
 		if (l.D > 0)
 		{
 			l.y = l.y + l.yi;
@@ -136,7 +135,6 @@ void	draw_line_high(t_fdf *fdf, t_point start, t_point end)
 		t = calculate_t(y, start.y, end.y);
 		color = interpolate_color(start.color, end.color, t);
 		put_pixel(fdf, l.x, y, color);
-		// ft_printf("Drawing pixel at (%d, %d), color=%X\n", l.x, y, color);
 		if (l.D > 0)
 		{
 			l.x = l.x + l.xi;

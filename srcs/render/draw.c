@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 06:58:26 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:43:27 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	swap_points(t_point *point1, t_point *point2)
  */
 static void	draw_line(t_fdf *fdf, t_point start, t_point end)
 {
-	if (abs(end.y - start.y) < abs(end.x - start.x))
+	if (ft_abs(end.y - start.y) < ft_abs(end.x - start.x))
 	{
 		if (start.x > end.x)
 			swap_points(&start, &end);
@@ -67,25 +67,28 @@ static void	draw_line_point(t_fdf *fdf, int x, int y, int next)
 
 	start.x = x;
 	start.y = y;
-	isometric_projection(fdf, &start.x, &start.y, fdf->map.points[y][x].z);
+	// ft_printf("Before projection: (%d, %d, %d)\n", start.x, start.y,
+	// 	fdf->map.points[y][x].z);
+	isometric(fdf, &start.x, &start.y, fdf->map.points[y][x].z);
+	// ft_printf("After projection: (%d, %d)\n", start.x, start.y);
 	start.color = fdf->map.points[y][x].color;
-	ft_printf("Start point: (%d, %d), color=%X\n", start.x, start.y,
-		start.color);
+	// ft_printf("Start point: (%d, %d), color=%X\n", start.x, start.y,
+	// 	start.color);
 	if (next == 'h')
 	{
 		end.x = x + 1;
 		end.y = y;
-		isometric_projection(fdf, &end.x, &end.y, fdf->map.points[y][x + 1].z);
+		isometric(fdf, &end.x, &end.y, fdf->map.points[y][x + 1].z);
 		end.color = fdf->map.points[y][x + 1].color;
 	}
 	else
 	{
 		end.x = x;
 		end.y = y + 1;
-		isometric_projection(fdf, &end.x, &end.y, fdf->map.points[y + 1][x].z);
+		isometric(fdf, &end.x, &end.y, fdf->map.points[y + 1][x].z);
 		end.color = fdf->map.points[y + 1][x].color;
 	}
-	ft_printf("End point: (%d, %d), color=%X\n", end.x, end.y, end.color);
+	// ft_printf("End point: (%d, %d), color=%X\n", end.x, end.y, end.color);
 	draw_line(fdf, start, end);
 }
 
@@ -108,14 +111,18 @@ void	draw_map(t_fdf *fdf)
 	int	x;
 	int	y;
 
+	ft_printf("Map dimensions: %d x %d\n", fdf->map.width, fdf->map.height);
+	// fdf->shift_x = fdf->window.width / 2 - (fdf->map.width * fdf->scale) / 2;
+	// fdf->shift_y = fdf->window.height / 2 - (fdf->map.height * fdf->scale)
+	// / 2;
 	y = 0;
 	while (y < fdf->map.height)
 	{
 		x = 0;
 		while (x < fdf->map.width)
 		{
-			ft_printf("Drawing point at (%d, %d), z=%d, color=%X\n", x, y,
-				fdf->map.points[y][x].z, fdf->map.points[y][x].color);
+			// ft_printf("Drawing point at (%d, %d), z=%d, color=%X\n", x, y,
+			// 	fdf->map.points[y][x].z, fdf->map.points[y][x].color);
 			if (x < fdf->map.width - 1)
 				draw_line_point(fdf, x, y, 'h');
 			if (y < fdf->map.height - 1)

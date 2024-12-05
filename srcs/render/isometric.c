@@ -6,27 +6,19 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 06:58:45 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:39:35 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	isometric_projection(t_fdf *fdf, int *x, int *y, int z)
+void	isometric(t_fdf *fdf, int *x, int *y, int z)
 {
-	int	previous_x;
-	int	previous_y;
+	double	previous_x;
 
-	if (fdf->camera.is_isometric)
-	{
-		previous_x = *x;
-		previous_y = *y;
-		*x = (previous_x - previous_y) * cos(fdf->camera.angle);
-		*y = -z * fdf->z_scale + (previous_x + previous_y)
-			* sin(fdf->camera.angle);
-		ft_printf("Isometric projection: (%d, %d, %d) -> (%d, %d)\n",
-			previous_x, previous_y, z, *x, *y);
-	}
+	previous_x = *x;
+	*x = (int)((previous_x - *y) * cos(fdf->camera.angle));
+	*y = (int)((previous_x + *y) * sin(fdf->camera.angle) - z * fdf->z_scale);
 	*x = *x * fdf->scale + fdf->shift_x;
 	*y = *y * fdf->scale + fdf->shift_y;
 }

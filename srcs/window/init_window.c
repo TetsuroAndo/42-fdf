@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:23:23 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 05:28:47 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:12:17 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	init_window(t_fdf *fdf)
 	fdf->window.mlx_ptr = mlx_init();
 	if (!fdf->window.mlx_ptr)
 		return (0);
-	fdf->window.width = 2048;
-	fdf->window.height = 1024;
 	fdf->window.win_ptr = mlx_new_window(fdf->window.mlx_ptr, fdf->window.width,
 			fdf->window.height, "FDF");
 	if (!fdf->window.win_ptr)
