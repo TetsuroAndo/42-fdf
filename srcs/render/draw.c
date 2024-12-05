@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 12:43:27 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/05 13:35:16 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,8 @@ void	draw_map(t_fdf *fdf)
 	int	y;
 
 	ft_printf("Map dimensions: %d x %d\n", fdf->map.width, fdf->map.height);
-	// fdf->shift_x = fdf->window.width / 2 - (fdf->map.width * fdf->scale) / 2;
-	// fdf->shift_y = fdf->window.height / 2 - (fdf->map.height * fdf->scale)
-	// / 2;
+	fdf->shift_x = fdf->window.width / 2 - (fdf->map.width * fdf->scale) / 2;
+	fdf->shift_y = fdf->window.height / 2 - (fdf->map.height * fdf->scale) / 2;
 	y = 0;
 	while (y < fdf->map.height)
 	{
