@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 06:19:57 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 12:14:48 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/06 13:57:00 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	free_fdf(t_fdf *fdf)
 		if (fdf->window.mlx_ptr)
 		{
 			mlx_destroy_display(fdf->window.mlx_ptr);
+			mlx_loop_end(fdf->window.mlx_ptr);
 			free(fdf->window.mlx_ptr);
 		}
-		mlx_loop_end(fdf->window.mlx_ptr);
 		free(fdf);
 	}
 }
