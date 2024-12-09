@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 06:36:01 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/10 06:48:58 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ void	adjust_view(t_fdf *fdf)
 	scale_factor_x = (double)fdf->window.width / bounding_box_width;
 	scale_factor_y = (double)fdf->window.height / bounding_box_height;
 	if (scale_factor_x < scale_factor_y)
-		fdf->scale = (int)(scale_factor_x * 0.9);
+		fdf->scale = (int)(scale_factor_x * 0.7);
 	else
-		fdf->scale = (int)(scale_factor_y * 0.9);
+		fdf->scale = (int)(scale_factor_y * 0.7);
 	fdf->shift_x = fdf->window.width / 2 - (int)(fdf->scale * ((iso_bounds.min_x
 					+ iso_bounds.max_x) / 2.0));
 	fdf->shift_y = fdf->window.height / 2 - (int)(fdf->scale

@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 06:25:56 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/10 06:45:18 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,14 @@ typedef struct s_fdf
 	int			shift_y;
 }				t_fdf;
 
-/*** srcs ***/
-void			ft_error(char *msg);
-void			free_fdf(t_fdf *fdf);
+/*** events ***/
+int				key_press(int keycode, t_fdf *fdf);
+
+/*** render ***/
+void			draw_map(t_fdf *fdf);
+void			isometric(t_fdf *fdf, int *x, int *y, int z);
+void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
+void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
 
 /*** set data ***/
 int				open_file(char *file_name);
@@ -80,18 +85,13 @@ void			parse_map_size(int fd, size_t *width, size_t *height);
 void			parse_line(char *line, t_point *points, size_t width, size_t y);
 void			adjust_view(t_fdf *fdf);
 
-/*** render ***/
-void			draw_map(t_fdf *fdf);
-void			isometric(t_fdf *fdf, int *x, int *y, int z);
-void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
-void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
-
 /*** window ***/
 void			put_pixel(t_fdf *fdf, int x, int y, int color);
 int				init_window(t_fdf *fdf);
 int				close_window(t_fdf *fdf);
 
-/*** events ***/
-int				key_press(int keycode, t_fdf *fdf);
+/*** srcs ***/
+void			ft_error(char *msg);
+void			free_fdf(t_fdf *fdf);
 
 #endif
