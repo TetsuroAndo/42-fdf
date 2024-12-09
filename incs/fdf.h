@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 08:13:12 by teando            #+#    #+#             */
-/*   Updated: 2024/12/05 12:39:25 by teando           ###   ########.fr       */
+/*   Created: 2024/12/10 05:04:18 by teando            #+#    #+#             */
+/*   Updated: 2024/12/10 05:43:02 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,14 @@
 
 # define ESC 65307
 # define CLOSE_WINDOW 17
-
 # define PI 3.14159265358979323846
-# define ISOMETRIC_ANGLE (PI / 4)
+# define DEFAULT_COLOR 0xFFFFFF
 
 typedef struct s_point
 {
 	int			x;
 	int			y;
 	int			z;
-	int			color;
 }				t_point;
 
 typedef struct s_map
@@ -47,11 +45,16 @@ typedef struct s_map
 	int			max_z;
 }				t_map;
 
-typedef struct s_camera
+typedef struct s_line
 {
-	double		angle;
-	int			is_isometric;
-}				t_camera;
+	int			dx;
+	int			dy;
+	int			xi;
+	int			yi;
+	int			d;
+	int			x;
+	int			y;
+}				t_line;
 
 typedef struct s_window
 {
@@ -69,24 +72,12 @@ typedef struct s_window
 typedef struct s_fdf
 {
 	t_map		map;
-	t_camera	camera;
 	t_window	window;
 	int			scale;
 	int			z_scale;
 	int			shift_x;
 	int			shift_y;
 }				t_fdf;
-
-typedef struct s_line
-{
-	int			dx;
-	int			dy;
-	int			xi;
-	int			yi;
-	int			D;
-	int			x;
-	int			y;
-}				t_line;
 
 /*** srcs ***/
 void			ft_error(char *msg);
@@ -98,11 +89,6 @@ t_map			read_map(char *file_name);
 t_point			**allocate_points(size_t width, size_t height);
 void			parse_map_size(int fd, size_t *width, size_t *height);
 void			parse_line(char *line, t_point *points, size_t width, size_t y);
-
-// color.c
-int				get_default_color(int z, int min_z, int max_z);
-int				parse_color(const char *str);
-int				interpolate_color(int color1, int color2, double percentage);
 
 /*** render ***/
 void			draw_map(t_fdf *fdf);

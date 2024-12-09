@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/06 18:14:20 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/10 05:28:46 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ static t_fdf	*init_fdf(void)
 		ft_error("Failed to allocate memory for fdf");
 	fdf->scale = 20;
 	fdf->z_scale = 1;
-	fdf->camera.angle = ISOMETRIC_ANGLE;
 	fdf->shift_x = 500;
 	fdf->shift_y = 500;
-	fdf->camera.is_isometric = 1;
 	fdf->window.width = 1200;
 	fdf->window.height = 800;
 	return (fdf);
