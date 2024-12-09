@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 05:28:46 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/10 06:43:13 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,11 @@ static t_fdf	*init_fdf(void)
 	fdf = (t_fdf *)ft_calloc(1, sizeof(t_fdf));
 	if (!fdf)
 		ft_error("Failed to allocate memory for fdf");
-	fdf->scale = 20;
 	fdf->z_scale = 1;
-	fdf->shift_x = 500;
-	fdf->shift_y = 500;
-	fdf->window.width = 1200;
-	fdf->window.height = 800;
+	fdf->window.width = 1600;
+	fdf->window.height = 980;
 	return (fdf);
 }
-
-// static void	print_map_data(t_map map)
-// {
-// 	size_t	x;
-// 	size_t	y;
-
-// 	y = 0;
-// 	while (y < map.height)
-// 	{
-// 		x = 0;
-// 		while (x < map.width)
-// 		{
-// 			ft_printf("(%d,%d,%d,0x%X) ", map.points[y][x].x,
-// 				map.points[y][x].y, map.points[y][x].z, map.points[y][x].color);
-// 			x++;
-// 		}
-// 		ft_printf("\n");
-// 		y++;
-// 	}
-// }
 
 int	main(int ac, char **av)
 {
@@ -66,7 +43,7 @@ int	main(int ac, char **av)
 		free_fdf(fdf);
 		return (1);
 	}
-	// print_map_data(fdf->map);
+	adjust_view(fdf);
 	draw_map(fdf);
 	mlx_hook(fdf->window.win_ptr, CLOSE_WINDOW, 0, close_window, fdf);
 	mlx_key_hook(fdf->window.win_ptr, key_press, fdf);

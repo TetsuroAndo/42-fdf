@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 05:04:18 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 05:43:02 by teando           ###   ########.fr       */
+/*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
+/*   Updated: 2024/12/10 06:25:56 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,6 @@ typedef struct s_map
 	int			max_z;
 }				t_map;
 
-typedef struct s_line
-{
-	int			dx;
-	int			dy;
-	int			xi;
-	int			yi;
-	int			d;
-	int			x;
-	int			y;
-}				t_line;
-
 typedef struct s_window
 {
 	int			width;
@@ -89,6 +78,7 @@ t_map			read_map(char *file_name);
 t_point			**allocate_points(size_t width, size_t height);
 void			parse_map_size(int fd, size_t *width, size_t *height);
 void			parse_line(char *line, t_point *points, size_t width, size_t y);
+void			adjust_view(t_fdf *fdf);
 
 /*** render ***/
 void			draw_map(t_fdf *fdf);

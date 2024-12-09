@@ -6,11 +6,22 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 05:01:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 05:41:52 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/10 06:26:21 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+typedef struct s_line
+{
+	int	dx;
+	int	dy;
+	int	xi;
+	int	yi;
+	int	d;
+	int	x;
+	int	y;
+}		t_line;
 
 void	draw_line_low(t_fdf *fdf, t_point start, t_point end)
 {

@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/12/10 05:35:44 by teando           ###   ########.fr        #
+#    Updated: 2024/12/10 06:36:39 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS 		:= \
 			isometric.c \
 		) \
 		$(addprefix set_data/, \
+			adjust_view.c \
 			open_map.c \
 			read_map.c \
 			parse_dot.c \
