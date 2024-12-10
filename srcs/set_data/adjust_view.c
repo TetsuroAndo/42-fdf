@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 06:48:58 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 08:40:18 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_iso_bounds	calculate_iso_bounds(t_fdf *fdf)
 {
 	t_point_calc	point;
 	t_iso_bounds	bounds;
-	const double	pwz = (double)fdf->map.points[point.grid_y][point.grid_x].z;
+	double			pwz;
 
 	initialize_iso_bounds(&bounds);
 	point.grid_y = 0;
@@ -64,6 +64,7 @@ static t_iso_bounds	calculate_iso_bounds(t_fdf *fdf)
 		point.grid_x = 0;
 		while (point.grid_x < fdf->map.width)
 		{
+			pwz = (double)fdf->map.points[point.grid_y][point.grid_x].z;
 			point.world_x = (double)point.grid_x;
 			point.world_y = (double)point.grid_y;
 			point.world_z = pwz;
@@ -92,9 +93,9 @@ void	adjust_view(t_fdf *fdf)
 	scale_factor_x = (double)fdf->window.width / bounding_box_width;
 	scale_factor_y = (double)fdf->window.height / bounding_box_height;
 	if (scale_factor_x < scale_factor_y)
-		fdf->scale = (int)(scale_factor_x * 0.7);
+		fdf->scale = (int)(scale_factor_x * 0.8);
 	else
-		fdf->scale = (int)(scale_factor_y * 0.7);
+		fdf->scale = (int)(scale_factor_y * 0.8);
 	fdf->shift_x = fdf->window.width / 2 - (int)(fdf->scale * ((iso_bounds.min_x
 					+ iso_bounds.max_x) / 2.0));
 	fdf->shift_y = fdf->window.height / 2 - (int)(fdf->scale
