@@ -6,12 +6,21 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:39:04 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 11:18:47 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+/**
+ * @brief `fdf->projected` に確保されたメモリを解放する関数。
+ *
+ * @param fdf メイン構造体へのポインタ
+ *
+ * @details `project_points()` で確保された `fdf->projected` は
+ * `fdf->map.height` 行分のメモリを持つ。全ての行をfreeし、最後に
+ * `fdf->projected` 自体もfreeすることでメモリリークを防ぐ。
+ */
 void	free_projected(t_fdf *fdf)
 {
 	size_t	y;
@@ -22,6 +31,18 @@ void	free_projected(t_fdf *fdf)
 	free(fdf->projected);
 }
 
+/**
+ * @brief 座標をアイソメトリック投影で変換する補助関数。
+ *
+ * @param fdf メイン構造体へのポインタ
+ * @param x   X座標への参照(変換後の値を直接代入するためポインタ)
+ * @param y   Y座標への参照(同上)
+ * @param z   Z座標(高さ情報)
+ *
+ * @details 与えられた(x, y, z)をアイソメトリックな視点から見た投影座標へ変換する。
+ * 回転角度は45度(π/4)で固定し、scaleやshiftも反映させる。
+ * 結果的に2D平面上に立体的なマップを投影するための座標が得られる。
+ */
 static void	isometric(t_fdf *fdf, int *x, int *y, int z)
 {
 	double	angle;
@@ -43,6 +64,15 @@ static void	isometric(t_fdf *fdf, int *x, int *y, int z)
 	*y = (int)dy;
 }
 
+/**
+ * @brief `fdf->projected` 用の2次元配列を確保する補助関数。
+ *
+ * @param fdf メイン構造体へのポインタ
+ *
+ * @details `fdf->map.height` 行、`fdf->map.width` 列分の `t_point`配列を確保し、
+ * `fdf->projected` に格納する。
+ * メモリ確保に失敗した場合、`ft_error()` を呼びエラー終了する。
+ */
 static void	allocate_projected(t_fdf *fdf)
 {
 	size_t	y;
@@ -60,6 +90,15 @@ static void	allocate_projected(t_fdf *fdf)
 	}
 }
 
+/**
+ * @brief マップ上の各座標点をアイソメトリック投影した2D座標へ変換する関数。
+ *
+ * @param fdf メイン構造体へのポインタ
+ *
+ * @details `fdf->map.points` に格納された3D座標を `projected` に投影する。
+ * 既に`projected`が確保済みの場合は解放後に再確保し、
+ * 各点を`isometric()`で投影変換する。
+ */
 void	project_points(t_fdf *fdf)
 {
 	size_t	y;

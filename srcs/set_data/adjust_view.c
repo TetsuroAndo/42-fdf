@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:19:27 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 12:45:29 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@ typedef struct s_point2d
 	double			y;
 }					t_point2d;
 
+/**
+ * @brief 3D座標を等角投影によって2D座標へ変換します。
+ *
+ * @param in_p 変換対象となる3Dポイント (x, y, z)
+ * @return 2D投影後のポイント (x, y)
+ *
+ * @details
+ * 角度45度の等角投影を用いて、(x, y, z)から2D平面上に(x, y)を求めます。
+ */
 static t_point2d	iso_transform_2d(t_point3d in_p)
 {
 	t_point2d	out;
@@ -59,6 +68,15 @@ static t_point2d	iso_transform_2d(t_point3d in_p)
 	return (out);
 }
 
+/**
+ * @brief マップの対角コーナーとなる8点を設定します。
+ *
+ * @param c 計算用の一時構造体 t_calc へのポインタ
+ * @return なし
+ *
+ * @details
+ * マップの最小/最大Z値、幅(w), 高さ(h)を用いてコーナーポイントを初期化します。
+ */
 static void	set_corners(t_calc *c)
 {
 	c->corners[0][0] = 0.0;
@@ -87,6 +105,15 @@ static void	set_corners(t_calc *c)
 	c->corners[7][2] = c->max_z;
 }
 
+/**
+ * @brief 設定したコーナー8点の投影座標から、xとy方向の最小値・最大値を計算します。
+ *
+ * @param c 計算用の一時構造体 t_calc へのポインタ
+ * @return なし
+ *
+ * @details
+ * 等角投影した結果の2D座標から、全体範囲を表すbounding boxを求めます。
+ */
 static void	calc_bounds(t_calc *c)
 {
 	int			i;
@@ -116,6 +143,17 @@ static void	calc_bounds(t_calc *c)
 	}
 }
 
+/**
+ * @brief 計算した範囲に基づき、表示スケールと表示位置シフトを計算します。
+ *
+ * @param fdf fdf構造体へのポインタ(結果を格納)
+ * @param c 計算用の一時構造体 t_calc へのポインタ
+ * @return なし
+ *
+ * @details
+ * マップ全体がウィンドウ内に収まり、かつ見やすくなるようスケールを調整し、
+ * マップの中心がウィンドウ中央に来るようシフト値を計算します。
+ */
 static void	calc_scale_shift(t_fdf *fdf, t_calc *c)
 {
 	c->box_w = c->max_x - c->min_x;
@@ -133,6 +171,17 @@ static void	calc_scale_shift(t_fdf *fdf, t_calc *c)
 				+ c->max_y) / 2.0);
 }
 
+/**
+ * @brief 入力された3Dマップデータを等角投影で2Dに変換し、ウィンドウ全体に最適な表示ができるようにスケールやシフトを計算します。
+ *
+ * @param fdf fdf構造体へのポインタ。読み込んだマップデータやウィンドウ情報、スケール、シフト値などが格納されます。
+ *
+ * @return なし
+ *
+ * @details
+ * この関数は、マップの隅点を基準に3D空間中での投影範囲を計算し、その範囲が与えられたウィンドウに収まるようにスケールやシフトを求めます。
+ * 結果的にマップ全体が等角投影下で見やすい形にウィンドウ中央付近に描画されるよう調整します。
+ */
 void	adjust_view(t_fdf *fdf)
 {
 	t_calc	c;
