@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 10:48:08 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 12:47:15 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 17:17:57 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static t_map	init_map(char *file_name, t_fdf *fdf)
 	fd = open_file(file_name, fdf);
 	parse_map_size(fd, fdf);
 	close(fd);
-	map.points = allocate_points(fdf);
+	map.points = allocate_points(fdf, fdf->map.height, fdf->map.width);
 	map.min_z = INT_MAX;
 	map.max_z = INT_MIN;
 	return (map);

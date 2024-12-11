@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/12/10 06:36:39 by teando           ###   ########.fr        #
+#    Updated: 2024/12/11 17:05:05 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRCS 		:= \
 			adjust_view.c \
 			open_map.c \
 			read_map.c \
-			parse_dot.c \
+			parse_utils.c \
 		) \
 		$(addprefix window/, \
 			ctl_window.c \
@@ -46,7 +46,7 @@ SRCS 		:= \
 		) \
 		error_handler.c \
 		fdf.c \
-		free_fdf.c \
+		free_utils.c \
 	)
 
 OBJS		:= $(addprefix $(OUT_DIR)/, $(SRCS:.c=.o))

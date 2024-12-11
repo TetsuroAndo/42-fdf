@@ -1,27 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_dot.c                                        :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:13:04 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 12:46:30 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 17:20:43 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	ft_free_list(char **ptr)
+/**
+ * @brief マップ情報を格納するために、(height x width)の2次元配列(points)を確保します。
+ *
+ * @param fdf fdf構造体へのポインタ（map.width, map.heightを参照してメモリを確保）
+ *
+ * @return 確保に成功した場合、確保済みの t_point** 配列を返します。失敗時にはエラーを表示して終了します。
+ *
+ * @details
+ * 各行ごとにメモリを確保するため、1行でも確保に失敗した場合はエラー終了します。
+ *`fdf->map.height` 行、`fdf->map.width` 列分の `t_point`配列を確保し、アドレスをreturnする。
+ * メモリ確保に失敗した場合、`ft_error()` を呼びエラー終了する。
+ */
+t_point	**allocate_points(t_fdf *fdf, size_t height, size_t width)
 {
+	t_point	**points;
 	size_t	i;
 
+	points = (t_point **)malloc(sizeof(t_point *) * (height + 1));
+	if (!points)
+		ft_error("Error: Memory allocation failed", fdf);
 	i = 0;
-	if (!ptr)
-		return ;
-	while (ptr[i])
-		free(ptr[i++]);
-	free(ptr);
+	while (i < height)
+	{
+		points[i] = (t_point *)malloc(sizeof(t_point) * width);
+		if (!points[i])
+		{
+			points[i] = NULL;
+			free_2d_points(points, 0);
+			ft_error("Error: Memory allocation failed", fdf);
+		}
+		i++;
+	}
+	points[i] = NULL;
+	return (points);
 }
 
 /**
@@ -63,50 +87,16 @@ void	parse_map_size(int fd, t_fdf *fdf)
 }
 
 /**
- * @brief マップ情報を格納するために、(height x width)の2次元配列(points)を確保します。
- *
- * @param fdf fdf構造体へのポインタ（map.width, map.heightを参照してメモリを確保）
- *
- * @return 確保に成功した場合、確保済みの t_point** 配列を返します。失敗時にはエラーを表示して終了します。
- *
- * @details
- * 各行ごとにメモリを確保するため、1行でも確保に失敗した場合はエラー終了します。
- */
-t_point	**allocate_points(t_fdf *fdf)
-{
-	t_point	**points;
-	size_t	i;
-
-	points = (t_point **)malloc(sizeof(t_point *) * fdf->map.height);
-	if (!points)
-		ft_error("Error: Memory allocation failed", fdf);
-	i = 0;
-	while (i < fdf->map.height)
-	{
-		points[i] = (t_point *)malloc(sizeof(t_point) * fdf->map.width);
-		if (!points[i])
-		{
-			while (i > 0)
-				free(points[--i]);
-			free(points);
-			ft_error("Error: Memory allocation failed", fdf);
-		}
-		i++;
-	}
-	return (points);
-}
-
-/**
  * @brief 1行分の文字列を解析し、各カラムに対して(x, y, z)座標をpoints配列へ格納します。
- * 
+ *
  * @param line 1行分のマップデータ（スペース区切りのZ値）
  * @param y 現在処理している行インデックス
  * @param fdf fdf構造体へのポインタ（map.points[y]に書き込み）
- * 
+ *
  * @return なし
- * 
+ *
  * @details
- * 与えられた行をスペースで分割し、Z値を整数として読み込みます。  
+ * 与えられた行をスペースで分割し、Z値を整数として読み込みます。
  * xは列インデックス、yは行インデックスとして設定します。
  * メモリ解放やエラーチェックを適宜行います。
  */
@@ -130,5 +120,5 @@ void	parse_line(char *line, size_t y, t_fdf *fdf)
 		points[x].z = ft_atoi(values[x]);
 		x++;
 	}
-	ft_free_list(values);
+	free_2d_char(values);
 }

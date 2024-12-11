@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 00:53:38 by teando            #+#    #+#             */
-/*   Updated: 2024/12/09 14:59:44 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 17:28:47 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ void	put_pixel(t_fdf *fdf, int x, int y, int color)
 int	close_window(t_fdf *fdf)
 {
 	free_fdf(fdf);
-	exit(0);
+	exit(STDIN_FILENO);
 }

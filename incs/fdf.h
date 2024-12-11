@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 16:29:32 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 17:26:10 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,11 @@ void			draw_map(t_fdf *fdf);
 void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
 void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
 void			project_points(t_fdf *fdf);
-void			free_projected(t_fdf *fdf);
 
 /*** set data ***/
 int				open_file(char *file_name, t_fdf *fdf);
 t_map			read_map(char *file_name, t_fdf *fdf);
-t_point			**allocate_points(t_fdf *fdf);
+t_point			**allocate_points(t_fdf *fdf, size_t height, size_t width);
 void			parse_map_size(int fd, t_fdf *fdf);
 void			parse_line(char *line, size_t y, t_fdf *fdf);
 void			adjust_view(t_fdf *fdf);
@@ -141,6 +140,8 @@ int				close_window(t_fdf *fdf);
 
 /*** srcs ***/
 void			ft_error(char *msg, t_fdf *fdf);
+void			free_2d_char(char **arr);
+void			free_2d_points(t_point **arr, size_t len);
 void			free_fdf(t_fdf *fdf);
 
 #endif
