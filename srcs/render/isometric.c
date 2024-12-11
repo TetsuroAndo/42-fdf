@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 17:16:00 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:06:51 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param z   Z座標(高さ情報)
  *
  * @details 与えられた(x, y, z)をアイソメトリックな視点から見た投影座標へ変換する。
- * 回転角度は45度(π/4)で固定し、scaleやshiftも反映させる。
+ * 回転角度は30度(π/6)で固定し、scaleやshiftも反映させる。
  * 結果的に2D平面上に立体的なマップを投影するための座標が得られる。
  */
 static void	isometric(t_fdf *fdf, int *x, int *y, int z)
@@ -29,20 +29,16 @@ static void	isometric(t_fdf *fdf, int *x, int *y, int z)
 	double	angle;
 	double	cos_a;
 	double	sin_a;
-	double	dx;
-	double	dy;
+	double	x_iso;
+	double	y_iso;
 
-	dx = (double)*x;
-	dy = (double)*y;
-	angle = M_PI / 4.0;
+	angle = M_PI / 6.0;
 	cos_a = cos(angle);
 	sin_a = sin(angle);
-	dx = (dx - dy) * cos_a;
-	dy = ((double)*x + (double)*y) * sin_a - (double)z * fdf->z_scale;
-	dx = dx * fdf->scale + fdf->shift_x;
-	dy = dy * fdf->scale + fdf->shift_y;
-	*x = (int)dx;
-	*y = (int)dy;
+	x_iso = ((double)*x - (double)*y) * cos_a;
+	y_iso = ((double)*x + (double)*y) * sin_a - (double)z * fdf->z_scale;
+	*x = (int)(x_iso * fdf->scale + fdf->shift_x);
+	*y = (int)(y_iso * fdf->scale + fdf->shift_y);
 }
 
 /**
