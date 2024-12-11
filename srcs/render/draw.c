@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 11:17:44 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:28:31 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	draw_line(t_fdf *fdf, t_point start, t_point end)
 	init_line_data(&data, start, end);
 	while (1)
 	{
-		put_pixel(fdf, start.x, start.y, DEFAULT_COLOR);
+		put_pixel(fdf, start.x, start.y, start.color);
 		if (start.x == end.x && start.y == end.y)
 			break ;
 		e2 = 2 * data.err;

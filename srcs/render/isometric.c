@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 18:06:51 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:36:00 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ void	project_points(t_fdf *fdf)
 		x = 0;
 		while (x < fdf->map.width)
 		{
-			fdf->projected[y][x].x = x;
-			fdf->projected[y][x].y = y;
+			fdf->projected[y][x].x = (int)x;
+			fdf->projected[y][x].y = (int)y;
 			fdf->projected[y][x].z = fdf->map.points[y][x].z;
+			fdf->projected[y][x].color = fdf->map.points[y][x].color;
 			isometric(fdf, &fdf->projected[y][x].x, &fdf->projected[y][x].y,
 				fdf->projected[y][x].z);
 			x++;

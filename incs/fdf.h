@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 17:26:10 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:18:51 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_point
 	int			x;
 	int			y;
 	int			z;
+	int			color;
 }				t_point;
 
 /**

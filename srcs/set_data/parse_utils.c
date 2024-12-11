@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:13:04 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 17:20:43 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:36:47 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,26 @@ void	parse_map_size(int fd, t_fdf *fdf)
 		ft_error("Error: Invalid map size", fdf);
 }
 
+static void	parse_z_color(char *val, int *z, int *color)
+{
+	char	*comma;
+	char	*hex;
+
+	comma = ft_strchr(val, ',');
+	*color = DEFAULT_COLOR;
+	if (comma)
+	{
+		*comma = '\0';
+		*z = ft_atoi(val);
+		hex = comma + 1;
+		if (ft_strnstr(hex, "0x", 2))
+			hex += 2;
+		*color = (int)ft_strtol(hex, NULL, 16);
+	}
+	else
+		*z = ft_atoi(val);
+}
+
 /**
  * @brief 1行分の文字列を解析し、各カラムに対して(x, y, z)座標をpoints配列へ格納します。
  *
@@ -103,21 +123,23 @@ void	parse_map_size(int fd, t_fdf *fdf)
 void	parse_line(char *line, size_t y, t_fdf *fdf)
 {
 	char	**values;
-	size_t	x;
-	size_t	width;
 	t_point	*points;
+	size_t	x;
+	int		z;
+	int		color;
 
-	width = fdf->map.width;
 	points = fdf->map.points[y];
 	values = ft_split(line, ' ');
 	if (!values)
 		ft_error("Error: Split failed", fdf);
 	x = 0;
-	while (x < width && values[x])
+	while (x < fdf->map.width && values[x])
 	{
+		parse_z_color(values[x], &z, &color);
 		points[x].x = (int)x;
 		points[x].y = (int)y;
-		points[x].z = ft_atoi(values[x]);
+		points[x].z = z;
+		points[x].color = color;
 		x++;
 	}
 	free_2d_char(values);
