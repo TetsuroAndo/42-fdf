@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 09:47:46 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:01:55 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_fdf
 	t_map		map;
 	t_window	window;
 	int			scale;
-	int			z_scale;
+	double		z_scale;
 	int			shift_x;
 	int			shift_y;
 }				t_fdf;

@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:00:43 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:05:39 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_fdf	*init_fdf(void)
 	fdf = (t_fdf *)ft_calloc(1, sizeof(t_fdf));
 	if (!fdf)
 		ft_error("Failed to allocate memory for fdf");
-	fdf->z_scale = 2;
+	fdf->z_scale = 1;
 	fdf->window.width = 1600;
 	fdf->window.height = 900;
 	return (fdf);
