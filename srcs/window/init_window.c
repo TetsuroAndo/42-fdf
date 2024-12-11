@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:23:23 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 18:51:53 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 20:48:37 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ int	init_window(t_fdf *fdf)
 	fdf->window.data_addr = mlx_get_data_addr(fdf->window.img_ptr,
 			&fdf->window.bits_per_pixel, &fdf->window.size_line,
 			&fdf->window.endian);
+	if (!fdf->window.data_addr)
+		return (0);
 	return (1);
 }
