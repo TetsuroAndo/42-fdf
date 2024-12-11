@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:13:04 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 18:51:35 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:54:01 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,6 @@ t_point	**allocate_points(t_fdf *fdf, size_t height, size_t width)
 	return (points);
 }
 
-/**
- * @brief マップファイルから行数と列数（最小列数）を計測し、fdf->mapに格納します。
- *
- * @param fd 既にopenされているファイルのディスクリプタ
- * @param fdf fdf構造体へのポインタ（結果のwidth, heightを格納）
- *
- * @return なし
- *
- * @details
- * ファイルを最後まで読み込み、各行の単語数（列数）をカウントします。
- * 最も小さい列数をマップの幅（width）とし、行数を高さ（height）とします。
- * widthまたはheightが0の場合はエラー終了します。
- */
 void	parse_map_size(int fd, t_fdf *fdf)
 {
 	char	*line;
@@ -94,20 +81,6 @@ static void	parse_z_color(char *val, int *z, int *color)
 		*z = ft_atoi(val);
 }
 
-/**
- * @brief 1行分の文字列を解析し、各カラムに対して(x, y, z)座標をpoints配列へ格納します。
- *
- * @param line 1行分のマップデータ（スペース区切りのZ値）
- * @param y 現在処理している行インデックス
- * @param fdf fdf構造体へのポインタ（map.points[y]に書き込み）
- *
- * @return なし
- *
- * @details
- * 与えられた行をスペースで分割し、Z値を整数として読み込みます。
- * xは列インデックス、yは行インデックスとして設定します。
- * メモリ解放やエラーチェックを適宜行います。
- */
 void	parse_line(char *line, size_t y, t_fdf *fdf)
 {
 	char	**values;
