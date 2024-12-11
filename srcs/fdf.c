@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 08:40:02 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 09:58:02 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_fdf	*init_fdf(void)
 		ft_error("Failed to allocate memory for fdf");
 	fdf->z_scale = 1;
 	fdf->window.width = 1600;
-	fdf->window.height = 980;
+	fdf->window.height = 900;
 	return (fdf);
 }
 
@@ -44,6 +44,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	adjust_view(fdf);
+	project_points(fdf);
 	draw_map(fdf);
 	mlx_hook(fdf->window.win_ptr, CLOSE_WINDOW, 0, close_window, fdf);
 	mlx_key_hook(fdf->window.win_ptr, key_press, fdf);

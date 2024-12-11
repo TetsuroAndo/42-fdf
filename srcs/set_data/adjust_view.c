@@ -6,98 +6,143 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 08:40:18 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 09:41:37 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <float.h>
 
-typedef struct s_iso_bounds
+typedef struct s_calc
 {
+	double			w;
+	double			h;
+	double			min_z;
+	double			max_z;
+	double			corners[8][3];
 	double			min_x;
 	double			max_x;
 	double			min_y;
 	double			max_y;
-}					t_iso_bounds;
+	double			box_w;
+	double			box_h;
+	double			scale_x;
+	double			scale_y;
+	double			scale;
+}					t_calc;
 
-typedef struct s_point_calc
+typedef struct s_point3d
 {
-	size_t			grid_x;
-	size_t			grid_y;
-	double			world_x;
-	double			world_y;
-	double			world_z;
-	double			iso_x;
-	double			iso_y;
-}					t_point_calc;
+	double			x;
+	double			y;
+	double			z;
+}					t_point3d;
 
-static void	initialize_iso_bounds(t_iso_bounds *bounds)
+typedef struct s_point2d
 {
-	bounds->min_x = 1000000000.0;
-	bounds->max_x = -1000000000.0;
-	bounds->min_y = 1000000000.0;
-	bounds->max_y = -1000000000.0;
+	double			x;
+	double			y;
+}					t_point2d;
+
+static t_point2d	iso_transform_2d(t_point3d in_p)
+{
+	t_point2d	out;
+	double		angle;
+	double		cos_a;
+	double		sin_a;
+
+	angle = M_PI / 4.0;
+	cos_a = cos(angle);
+	sin_a = sin(angle);
+	out.x = (in_p.x - in_p.y) * cos_a;
+	out.y = (in_p.x + in_p.y) * sin_a - in_p.z;
+	return (out);
 }
 
-static void	update_iso_bounds(t_iso_bounds *bounds, double iso_x, double iso_y)
+static void	set_corners(t_calc *c)
 {
-	if (iso_x < bounds->min_x)
-		bounds->min_x = iso_x;
-	if (iso_x > bounds->max_x)
-		bounds->max_x = iso_x;
-	if (iso_y < bounds->min_y)
-		bounds->min_y = iso_y;
-	if (iso_y > bounds->max_y)
-		bounds->max_y = iso_y;
+	c->corners[0][0] = 0.0;
+	c->corners[0][1] = 0.0;
+	c->corners[0][2] = c->min_z;
+	c->corners[1][0] = 0.0;
+	c->corners[1][1] = 0.0;
+	c->corners[1][2] = c->max_z;
+	c->corners[2][0] = c->w - 1.0;
+	c->corners[2][1] = 0.0;
+	c->corners[2][2] = c->min_z;
+	c->corners[3][0] = c->w - 1.0;
+	c->corners[3][1] = 0.0;
+	c->corners[3][2] = c->max_z;
+	c->corners[4][0] = 0.0;
+	c->corners[4][1] = c->h - 1.0;
+	c->corners[4][2] = c->min_z;
+	c->corners[5][0] = 0.0;
+	c->corners[5][1] = c->h - 1.0;
+	c->corners[5][2] = c->max_z;
+	c->corners[6][0] = c->w - 1.0;
+	c->corners[6][1] = c->h - 1.0;
+	c->corners[6][2] = c->min_z;
+	c->corners[7][0] = c->w - 1.0;
+	c->corners[7][1] = c->h - 1.0;
+	c->corners[7][2] = c->max_z;
 }
 
-static t_iso_bounds	calculate_iso_bounds(t_fdf *fdf)
+static void	calc_bounds(t_calc *c)
 {
-	t_point_calc	point;
-	t_iso_bounds	bounds;
-	double			pwz;
+	int			i;
+	t_point3d	in_p;
+	t_point2d	out;
 
-	initialize_iso_bounds(&bounds);
-	point.grid_y = 0;
-	while (point.grid_y < fdf->map.height)
+	c->min_x = DBL_MAX;
+	c->max_x = -DBL_MAX;
+	c->min_y = DBL_MAX;
+	c->max_y = -DBL_MAX;
+	i = 0;
+	while (i < 8)
 	{
-		point.grid_x = 0;
-		while (point.grid_x < fdf->map.width)
-		{
-			pwz = (double)fdf->map.points[point.grid_y][point.grid_x].z;
-			point.world_x = (double)point.grid_x;
-			point.world_y = (double)point.grid_y;
-			point.world_z = pwz;
-			point.iso_x = (point.world_x - point.world_y) * cos(PI / 4);
-			point.iso_y = (point.world_x + point.world_y) * sin(PI / 4)
-				- point.world_z;
-			update_iso_bounds(&bounds, point.iso_x, point.iso_y);
-			point.grid_x++;
-		}
-		point.grid_y++;
+		in_p.x = c->corners[i][0];
+		in_p.y = c->corners[i][1];
+		in_p.z = c->corners[i][2];
+		out = iso_transform_2d(in_p);
+		if (out.x < c->min_x)
+			c->min_x = out.x;
+		if (out.x > c->max_x)
+			c->max_x = out.x;
+		if (out.y < c->min_y)
+			c->min_y = out.y;
+		if (out.y > c->max_y)
+			c->max_y = out.y;
+		i++;
 	}
-	return (bounds);
+}
+
+static void	calc_scale_shift(t_fdf *fdf, t_calc *c)
+{
+	c->box_w = c->max_x - c->min_x;
+	c->box_h = c->max_y - c->min_y;
+	c->scale_x = (double)fdf->window.width / c->box_w;
+	c->scale_y = (double)fdf->window.height / c->box_h;
+	if (c->scale_x < c->scale_y)
+		c->scale = c->scale_x * 0.8;
+	else
+		c->scale = c->scale_y * 0.8;
+	fdf->scale = (int)c->scale;
+	fdf->z_scale = 1;
+	fdf->shift_x = fdf->window.width / 2 - (int)(c->scale * (c->min_x
+				+ c->max_x) / 2.0);
+	fdf->shift_y = fdf->window.height / 2 - (int)(c->scale * (c->min_y
+				+ c->max_y) / 2.0);
 }
 
 void	adjust_view(t_fdf *fdf)
 {
-	t_iso_bounds	iso_bounds;
-	double			bounding_box_width;
-	double			bounding_box_height;
-	double			scale_factor_x;
-	double			scale_factor_y;
+	t_calc	c;
 
-	iso_bounds = calculate_iso_bounds(fdf);
-	bounding_box_width = iso_bounds.max_x - iso_bounds.min_x;
-	bounding_box_height = iso_bounds.max_y - iso_bounds.min_y;
-	scale_factor_x = (double)fdf->window.width / bounding_box_width;
-	scale_factor_y = (double)fdf->window.height / bounding_box_height;
-	if (scale_factor_x < scale_factor_y)
-		fdf->scale = (int)(scale_factor_x * 0.8);
-	else
-		fdf->scale = (int)(scale_factor_y * 0.8);
-	fdf->shift_x = fdf->window.width / 2 - (int)(fdf->scale * ((iso_bounds.min_x
-					+ iso_bounds.max_x) / 2.0));
-	fdf->shift_y = fdf->window.height / 2 - (int)(fdf->scale
-			* ((iso_bounds.min_y + iso_bounds.max_y) / 2.0));
+	c.w = (double)fdf->map.width;
+	c.h = (double)fdf->map.height;
+	c.min_z = (double)fdf->map.min_z;
+	c.max_z = (double)fdf->map.max_z;
+	set_corners(&c);
+	calc_bounds(&c);
+	calc_scale_shift(fdf, &c);
 }

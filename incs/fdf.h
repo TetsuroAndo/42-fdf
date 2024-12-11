@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 06:45:18 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 09:47:46 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define ESC 65307
 # define CLOSE_WINDOW 17
-# define PI 3.14159265358979323846
+# define M_PI 3.14159265358979323846
 # define DEFAULT_COLOR 0xFFFFFF
 
 typedef struct s_point
@@ -60,6 +60,7 @@ typedef struct s_window
 
 typedef struct s_fdf
 {
+	t_point		**projected;
 	t_map		map;
 	t_window	window;
 	int			scale;
@@ -73,9 +74,10 @@ int				key_press(int keycode, t_fdf *fdf);
 
 /*** render ***/
 void			draw_map(t_fdf *fdf);
-void			isometric(t_fdf *fdf, int *x, int *y, int z);
 void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
 void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
+void			project_points(t_fdf *fdf);
+void			free_projected(t_fdf *fdf);
 
 /*** set data ***/
 int				open_file(char *file_name);

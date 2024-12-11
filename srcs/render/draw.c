@@ -6,58 +6,59 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 05:33:50 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 09:27:39 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	swap_points(t_point *point1, t_point *point2)
+typedef struct s_line_data
 {
-	t_point	tmp;
+	int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
+	int		err;
+}			t_line_data;
 
-	tmp = *point1;
-	*point1 = *point2;
-	*point2 = tmp;
+static void	init_line_data(t_line_data *data, t_point start, t_point end)
+{
+	data->dx = abs(end.x - start.x);
+	data->dy = -abs(end.y - start.y);
+	if (start.x < end.x)
+		data->sx = 1;
+	else
+		data->sx = -1;
+	if (start.y < end.y)
+		data->sy = 1;
+	else
+		data->sy = -1;
+	data->err = data->dx + data->dy;
 }
 
 static void	draw_line(t_fdf *fdf, t_point start, t_point end)
 {
-	if (ft_abs(end.y - start.y) < ft_abs(end.x - start.x))
-	{
-		if (start.x > end.x)
-			swap_points(&start, &end);
-		draw_line_low(fdf, start, end);
-	}
-	else
-	{
-		if (start.y > end.y)
-			swap_points(&start, &end);
-		draw_line_high(fdf, start, end);
-	}
-}
+	t_line_data	data;
+	int			e2;
 
-static void	draw_line_point(t_fdf *fdf, int x, int y, int next)
-{
-	t_point	start;
-	t_point	end;
-
-	start.x = x;
-	start.y = y;
-	isometric(fdf, &start.x, &start.y, fdf->map.points[y][x].z);
-	if (next == 'h')
+	init_line_data(&data, start, end);
+	while (1)
 	{
-		end.x = x + 1;
-		end.y = y;
-		isometric(fdf, &end.x, &end.y, fdf->map.points[y][x + 1].z);
+		put_pixel(fdf, start.x, start.y, DEFAULT_COLOR);
+		if (start.x == end.x && start.y == end.y)
+			break ;
+		e2 = 2 * data.err;
+		if (e2 >= data.dy)
+		{
+			data.err += data.dy;
+			start.x += data.sx;
+		}
+		if (e2 <= data.dx)
+		{
+			data.err += data.dx;
+			start.y += data.sy;
+		}
 	}
-	else
-	{
-		end.x = x;
-		end.y = y + 1;
-		isometric(fdf, &end.x, &end.y, fdf->map.points[y + 1][x].z);
-	}
-	draw_line(fdf, start, end);
 }
 
 void	draw_map(t_fdf *fdf)
@@ -65,8 +66,6 @@ void	draw_map(t_fdf *fdf)
 	size_t	x;
 	size_t	y;
 
-	fdf->shift_x = fdf->window.width / 2 - (fdf->map.width * fdf->scale) / 2;
-	fdf->shift_y = fdf->window.height / 2 - (fdf->map.height * fdf->scale) / 2;
 	y = 0;
 	while (y < fdf->map.height)
 	{
@@ -74,9 +73,9 @@ void	draw_map(t_fdf *fdf)
 		while (x < fdf->map.width)
 		{
 			if (x < fdf->map.width - 1)
-				draw_line_point(fdf, (int)x, (int)y, 'h');
+				draw_line(fdf, fdf->projected[y][x], fdf->projected[y][x + 1]);
 			if (y < fdf->map.height - 1)
-				draw_line_point(fdf, (int)x, (int)y, 'v');
+				draw_line(fdf, fdf->projected[y][x], fdf->projected[y + 1][x]);
 			x++;
 		}
 		y++;
