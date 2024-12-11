@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:42:24 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 09:27:39 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 09:59:21 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct s_line_data
 
 static void	init_line_data(t_line_data *data, t_point start, t_point end)
 {
-	data->dx = abs(end.x - start.x);
-	data->dy = -abs(end.y - start.y);
+	data->dx = ft_abs(end.x - start.x);
+	data->dy = -ft_abs(end.y - start.y);
 	if (start.x < end.x)
 		data->sx = 1;
 	else
