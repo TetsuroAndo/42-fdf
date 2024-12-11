@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:13:04 by teando            #+#    #+#             */
-/*   Updated: 2024/12/10 05:36:11 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:36:06 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	parse_line(char *line, t_point *points, size_t width, size_t y)
 	values = ft_split(line, ' ');
 	x = 0;
 	if (!values)
-		ft_error("Error: Split failed");
+		ft_error("Error: Split failed", NULL);
 	while (x < width && values[x])
 	{
 		points[x].x = (int)x;

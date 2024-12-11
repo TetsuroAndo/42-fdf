@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:01:18 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:19:27 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ static void	calc_scale_shift(t_fdf *fdf, t_calc *c)
 		c->scale = c->scale_x * 0.8;
 	else
 		c->scale = c->scale_y * 0.8;
-	fdf->scale = (int)c->scale;
+	fdf->scale = c->scale;
 	fdf->shift_x = fdf->window.width / 2 - (int)(c->scale * (c->min_x
 				+ c->max_x) / 2.0);
 	fdf->shift_y = fdf->window.height / 2 - (int)(c->scale * (c->min_y

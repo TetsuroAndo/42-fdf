@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:01:55 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:33:34 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_fdf
 	t_point		**projected;
 	t_map		map;
 	t_window	window;
-	int			scale;
+	double		scale;
 	double		z_scale;
 	int			shift_x;
 	int			shift_y;
@@ -93,7 +93,7 @@ int				init_window(t_fdf *fdf);
 int				close_window(t_fdf *fdf);
 
 /*** srcs ***/
-void			ft_error(char *msg);
+void			ft_error(char *msg, t_fdf *fdf);
 void			free_fdf(t_fdf *fdf);
 
 #endif

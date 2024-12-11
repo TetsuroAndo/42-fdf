@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 09:57:10 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:39:04 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	free_projected(t_fdf *fdf)
 
 	y = 0;
 	while (y < fdf->map.height)
-	{
-		free(fdf->projected[y]);
-		y++;
-	}
+		free(fdf->projected[y++]);
 	free(fdf->projected);
 }
 
@@ -52,13 +49,13 @@ static void	allocate_projected(t_fdf *fdf)
 
 	fdf->projected = (t_point **)malloc(sizeof(t_point *) * fdf->map.height);
 	if (!fdf->projected)
-		ft_error("Failed to allocate memory for projected points");
+		ft_error("Failed to allocate memory for projected points", fdf);
 	y = 0;
 	while (y < fdf->map.height)
 	{
 		fdf->projected[y] = (t_point *)malloc(sizeof(t_point) * fdf->map.width);
 		if (!fdf->projected[y])
-			ft_error("Failed to allocate memory for projected row");
+			ft_error("Failed to allocate memory for projected row", fdf);
 		y++;
 	}
 }

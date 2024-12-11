@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:05:39 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:33:55 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static t_fdf	*init_fdf(void)
 
 	fdf = (t_fdf *)ft_calloc(1, sizeof(t_fdf));
 	if (!fdf)
-		ft_error("Failed to allocate memory for fdf");
-	fdf->z_scale = 1;
-	fdf->window.width = 1600;
-	fdf->window.height = 900;
+		ft_error("Failed to allocate memory for fdf", fdf);
+	fdf->z_scale = 0.1;
+	fdf->window.width = 3000;
+	fdf->window.height = 2000;
 	return (fdf);
 }
 
@@ -35,13 +35,11 @@ int	main(int ac, char **av)
 	fdf->map = read_map(av[1]);
 	if (fdf->map.points == NULL)
 	{
-		free_fdf(fdf);
-		return (1);
+		return (free_fdf(fdf), 1);
 	}
 	if (!init_window(fdf))
 	{
-		free_fdf(fdf);
-		return (1);
+		return (free_fdf(fdf), 1);
 	}
 	adjust_view(fdf);
 	project_points(fdf);
@@ -49,6 +47,5 @@ int	main(int ac, char **av)
 	mlx_hook(fdf->window.win_ptr, CLOSE_WINDOW, 0, close_window, fdf);
 	mlx_key_hook(fdf->window.win_ptr, key_press, fdf);
 	mlx_loop(fdf->window.mlx_ptr);
-	free_fdf(fdf);
-	return (0);
+	return (free_fdf(fdf), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 06:19:57 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 09:38:53 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 10:26:13 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	free_fdf(t_fdf *fdf)
 
 	if (fdf)
 	{
-		free_projected(fdf);
+		if (fdf->projected)
+			free_projected(fdf);
 		if (fdf->map.points)
 		{
 			i = 0;
