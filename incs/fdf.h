@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:33:34 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 11:04:53 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ void			project_points(t_fdf *fdf);
 void			free_projected(t_fdf *fdf);
 
 /*** set data ***/
-int				open_file(char *file_name);
-t_map			read_map(char *file_name);
-t_point			**allocate_points(size_t width, size_t height);
-void			parse_map_size(int fd, size_t *width, size_t *height);
-void			parse_line(char *line, t_point *points, size_t width, size_t y);
+int				open_file(char *file_name, t_fdf *fdf);
+t_map			read_map(char *file_name, t_fdf *fdf);
+t_point			**allocate_points(t_fdf *fdf);
+void			parse_map_size(int fd, t_fdf *fdf);
+void			parse_line(char *line, size_t y, t_fdf *fdf);
 void			adjust_view(t_fdf *fdf);
 
 /*** window ***/

@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:13:04 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 10:36:06 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 11:04:42 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	ft_free_list(char **ptr)
 	free(ptr);
 }
 
-void	parse_map_size(int fd, size_t *width, size_t *height)
+void	parse_map_size(int fd, t_fdf *fdf)
 {
 	char	*line;
 	size_t	line_width;
@@ -43,45 +43,49 @@ void	parse_map_size(int fd, size_t *width, size_t *height)
 		line_count++;
 		line = get_next_line(fd);
 	}
-	*width = min_width;
-	*height = line_count;
-	if (*width == 0 || *height == 0)
-		ft_error("Error: Invalid map size");
+	fdf->map.width = min_width;
+	fdf->map.height = line_count;
+	if (fdf->map.width == 0 || fdf->map.height == 0)
+		ft_error("Error: Invalid map size", fdf);
 }
 
-t_point	**allocate_points(size_t width, size_t height)
+t_point	**allocate_points(t_fdf *fdf)
 {
 	t_point	**points;
 	size_t	i;
 
-	points = (t_point **)malloc(sizeof(t_point *) * height);
+	points = (t_point **)malloc(sizeof(t_point *) * fdf->map.height);
 	if (!points)
-		ft_error("Error: Memory allocation failed");
+		ft_error("Error: Memory allocation failed", fdf);
 	i = 0;
-	while (i < height)
+	while (i < fdf->map.height)
 	{
-		points[i] = (t_point *)malloc(sizeof(t_point) * width);
+		points[i] = (t_point *)malloc(sizeof(t_point) * fdf->map.width);
 		if (!points[i])
 		{
 			while (i > 0)
 				free(points[--i]);
 			free(points);
-			ft_error("Error: Memory allocation failed");
+			ft_error("Error: Memory allocation failed", fdf);
 		}
 		i++;
 	}
 	return (points);
 }
 
-void	parse_line(char *line, t_point *points, size_t width, size_t y)
+void	parse_line(char *line, size_t y, t_fdf *fdf)
 {
 	char	**values;
 	size_t	x;
+	size_t	width;
+	t_point	*points;
 
+	width = fdf->map.width;
+	points = fdf->map.points[y];
 	values = ft_split(line, ' ');
-	x = 0;
 	if (!values)
-		ft_error("Error: Split failed", NULL);
+		ft_error("Error: Split failed", fdf);
+	x = 0;
 	while (x < width && values[x])
 	{
 		points[x].x = (int)x;
