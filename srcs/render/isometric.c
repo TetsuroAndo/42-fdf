@@ -6,24 +6,12 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 18:36:00 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:51:12 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/**
- * @brief 座標をアイソメトリック投影で変換する補助関数。
- *
- * @param fdf メイン構造体へのポインタ
- * @param x   X座標への参照(変換後の値を直接代入するためポインタ)
- * @param y   Y座標への参照(同上)
- * @param z   Z座標(高さ情報)
- *
- * @details 与えられた(x, y, z)をアイソメトリックな視点から見た投影座標へ変換する。
- * 回転角度は30度(π/6)で固定し、scaleやshiftも反映させる。
- * 結果的に2D平面上に立体的なマップを投影するための座標が得られる。
- */
 static void	isometric(t_fdf *fdf, int *x, int *y, int z)
 {
 	double	angle;
@@ -41,15 +29,6 @@ static void	isometric(t_fdf *fdf, int *x, int *y, int z)
 	*y = (int)(y_iso * fdf->scale + fdf->shift_y);
 }
 
-/**
- * @brief マップ上の各座標点をアイソメトリック投影した2D座標へ変換する関数。
- *
- * @param fdf メイン構造体へのポインタ
- *
- * @details `fdf->map.points` に格納された3D座標を `projected` に投影する。
- * 既に`projected`が確保済みの場合は解放後に再確保し、
- * 各点を`isometric()`で投影変換する。
- */
 void	project_points(t_fdf *fdf)
 {
 	size_t	y;

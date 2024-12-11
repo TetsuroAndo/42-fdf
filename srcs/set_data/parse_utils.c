@@ -6,24 +6,12 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:13:04 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 18:36:47 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:51:35 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/**
- * @brief マップ情報を格納するために、(height x width)の2次元配列(points)を確保します。
- *
- * @param fdf fdf構造体へのポインタ（map.width, map.heightを参照してメモリを確保）
- *
- * @return 確保に成功した場合、確保済みの t_point** 配列を返します。失敗時にはエラーを表示して終了します。
- *
- * @details
- * 各行ごとにメモリを確保するため、1行でも確保に失敗した場合はエラー終了します。
- *`fdf->map.height` 行、`fdf->map.width` 列分の `t_point`配列を確保し、アドレスをreturnする。
- * メモリ確保に失敗した場合、`ft_error()` を呼びエラー終了する。
- */
 t_point	**allocate_points(t_fdf *fdf, size_t height, size_t width)
 {
 	t_point	**points;
