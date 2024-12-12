@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/12 11:32:58 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 11:45:36 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,23 @@
 
 # define ESC 65307
 # define CLOSE_WINDOW 17
-# define M_PI 3.14159265358979323846
 # define DEFAULT_COLOR 0xFFFFFF
 # define X 0
 # define Y 1
 # define Z 2
+
+typedef struct s_point2d
+{
+	double		x;
+	double		y;
+}				t_point2d;
+
+typedef struct s_point3d
+{
+	double		x;
+	double		y;
+	double		z;
+}				t_point3d;
 
 typedef struct s_point
 {
@@ -81,6 +93,7 @@ void			draw_map(t_fdf *fdf);
 void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
 void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
 void			project_points(t_fdf *fdf);
+t_point2d		iso_transform_2d(t_point3d in_p);
 
 /*** set data ***/
 int				open_file(char *file_name, t_fdf *fdf);

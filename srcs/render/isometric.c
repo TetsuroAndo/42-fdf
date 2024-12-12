@@ -6,27 +6,38 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:22:45 by teando            #+#    #+#             */
-/*   Updated: 2024/12/12 11:29:26 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 11:38:43 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	isometric(t_fdf *fdf, int *x, int *y, int z)
+t_point2d	iso_transform_2d(t_point3d in_p)
 {
-	double	angle;
-	double	cos_a;
-	double	sin_a;
-	double	x_iso;
-	double	y_iso;
+	t_point2d	out;
+	double		angle;
+	double		cos_a;
+	double		sin_a;
 
 	angle = M_PI / 6.0;
 	cos_a = cos(angle);
 	sin_a = sin(angle);
-	x_iso = ((double)*x - (double)*y) * cos_a;
-	y_iso = ((double)*x + (double)*y) * sin_a - (double)z * fdf->z_scale;
-	*x = (int)(x_iso * fdf->scale + fdf->shift_x);
-	*y = (int)(y_iso * fdf->scale + fdf->shift_y);
+	out.x = (in_p.x - in_p.y) * cos_a;
+	out.y = (in_p.x + in_p.y) * sin_a - in_p.z;
+	return (out);
+}
+
+static void	isometric(t_fdf *fdf, int *x, int *y, int z)
+{
+	t_point3d	p3d;
+	t_point2d	p2d;
+
+	p3d.x = (double)*x;
+	p3d.y = (double)*y;
+	p3d.z = (double)z * fdf->z_scale;
+	p2d = iso_transform_2d(p3d);
+	*x = (int)(p2d.x * fdf->scale + fdf->shift_x);
+	*y = (int)(p2d.y * fdf->scale + fdf->shift_y);
 }
 
 void	project_points(t_fdf *fdf)

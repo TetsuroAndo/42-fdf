@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/12 11:29:42 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 11:38:42 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,21 @@
 
 typedef struct s_calc
 {
-	double			w;
-	double			h;
-	double			min_z;
-	double			max_z;
-	double			corners[8][3];
-	double			min_x;
-	double			max_x;
-	double			min_y;
-	double			max_y;
-	double			box_w;
-	double			box_h;
-	double			scale_x;
-	double			scale_y;
-	double			scale;
-}					t_calc;
-
-typedef struct s_point3d
-{
-	double			x;
-	double			y;
-	double			z;
-}					t_point3d;
-
-typedef struct s_point2d
-{
-	double			x;
-	double			y;
-}					t_point2d;
-
-static t_point2d	iso_transform_2d(t_point3d in_p)
-{
-	t_point2d	out;
-	double		angle;
-	double		cos_a;
-	double		sin_a;
-
-	angle = M_PI / 6.0;
-	cos_a = cos(angle);
-	sin_a = sin(angle);
-	out.x = (in_p.x - in_p.y) * cos_a;
-	out.y = (in_p.x + in_p.y) * sin_a - in_p.z;
-	return (out);
-}
+	double	w;
+	double	h;
+	double	min_z;
+	double	max_z;
+	double	corners[8][3];
+	double	min_x;
+	double	max_x;
+	double	min_y;
+	double	max_y;
+	double	box_w;
+	double	box_h;
+	double	scale_x;
+	double	scale_y;
+	double	scale;
+}			t_calc;
 
 static void	set_corners(t_calc *c)
 {
