@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 19:08:37 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 11:32:58 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # define CLOSE_WINDOW 17
 # define M_PI 3.14159265358979323846
 # define DEFAULT_COLOR 0xFFFFFF
+# define X 0
+# define Y 1
+# define Z 2
 
 typedef struct s_point
 {

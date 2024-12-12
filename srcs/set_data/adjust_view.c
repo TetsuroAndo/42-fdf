@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:18:11 by teando            #+#    #+#             */
-/*   Updated: 2024/12/11 18:51:28 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 11:29:42 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_point2d	iso_transform_2d(t_point3d in_p)
 	double		cos_a;
 	double		sin_a;
 
-	angle = M_PI / 4.0;
+	angle = M_PI / 6.0;
 	cos_a = cos(angle);
 	sin_a = sin(angle);
 	out.x = (in_p.x - in_p.y) * cos_a;
@@ -61,30 +61,30 @@ static t_point2d	iso_transform_2d(t_point3d in_p)
 
 static void	set_corners(t_calc *c)
 {
-	c->corners[0][0] = 0.0;
-	c->corners[0][1] = 0.0;
-	c->corners[0][2] = c->min_z;
-	c->corners[1][0] = 0.0;
-	c->corners[1][1] = 0.0;
-	c->corners[1][2] = c->max_z;
-	c->corners[2][0] = c->w - 1.0;
-	c->corners[2][1] = 0.0;
-	c->corners[2][2] = c->min_z;
-	c->corners[3][0] = c->w - 1.0;
-	c->corners[3][1] = 0.0;
-	c->corners[3][2] = c->max_z;
-	c->corners[4][0] = 0.0;
-	c->corners[4][1] = c->h - 1.0;
-	c->corners[4][2] = c->min_z;
-	c->corners[5][0] = 0.0;
-	c->corners[5][1] = c->h - 1.0;
-	c->corners[5][2] = c->max_z;
-	c->corners[6][0] = c->w - 1.0;
-	c->corners[6][1] = c->h - 1.0;
-	c->corners[6][2] = c->min_z;
-	c->corners[7][0] = c->w - 1.0;
-	c->corners[7][1] = c->h - 1.0;
-	c->corners[7][2] = c->max_z;
+	c->corners[0][X] = 0.0;
+	c->corners[0][Y] = 0.0;
+	c->corners[0][Z] = c->min_z;
+	c->corners[1][X] = 0.0;
+	c->corners[1][Y] = 0.0;
+	c->corners[1][Z] = c->max_z;
+	c->corners[2][X] = c->w - 1.0;
+	c->corners[2][Y] = 0.0;
+	c->corners[2][Z] = c->min_z;
+	c->corners[3][X] = c->w - 1.0;
+	c->corners[3][Y] = 0.0;
+	c->corners[3][Z] = c->max_z;
+	c->corners[4][X] = 0.0;
+	c->corners[4][Y] = c->h - 1.0;
+	c->corners[4][Z] = c->min_z;
+	c->corners[5][X] = 0.0;
+	c->corners[5][Y] = c->h - 1.0;
+	c->corners[5][Z] = c->max_z;
+	c->corners[6][X] = c->w - 1.0;
+	c->corners[6][Y] = c->h - 1.0;
+	c->corners[6][Z] = c->min_z;
+	c->corners[7][X] = c->w - 1.0;
+	c->corners[7][Y] = c->h - 1.0;
+	c->corners[7][Z] = c->max_z;
 }
 
 static void	calc_bounds(t_calc *c)
@@ -100,9 +100,9 @@ static void	calc_bounds(t_calc *c)
 	i = 0;
 	while (i < 8)
 	{
-		in_p.x = c->corners[i][0];
-		in_p.y = c->corners[i][1];
-		in_p.z = c->corners[i][2];
+		in_p.x = c->corners[i][X];
+		in_p.y = c->corners[i][Y];
+		in_p.z = c->corners[i][Z];
 		out = iso_transform_2d(in_p);
 		if (out.x < c->min_x)
 			c->min_x = out.x;
@@ -123,9 +123,9 @@ static void	calc_scale_shift(t_fdf *fdf, t_calc *c)
 	c->scale_x = (double)fdf->window.width / c->box_w;
 	c->scale_y = (double)fdf->window.height / c->box_h;
 	if (c->scale_x < c->scale_y)
-		c->scale = c->scale_x * 0.8;
+		c->scale = c->scale_x * 0.9;
 	else
-		c->scale = c->scale_y * 0.8;
+		c->scale = c->scale_y * 0.9;
 	fdf->scale = c->scale;
 	fdf->shift_x = fdf->window.width / 2 - (int)(c->scale * (c->min_x
 				+ c->max_x) / 2.0);
