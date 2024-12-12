@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 06:16:58 by teando            #+#    #+#             */
-/*   Updated: 2024/12/12 11:45:36 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 11:55:01 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int				key_press(int keycode, t_fdf *fdf);
 
 /*** render ***/
 void			draw_map(t_fdf *fdf);
-void			draw_line_low(t_fdf *fdf, t_point start, t_point end);
-void			draw_line_high(t_fdf *fdf, t_point start, t_point end);
 void			project_points(t_fdf *fdf);
 t_point2d		iso_transform_2d(t_point3d in_p);
 

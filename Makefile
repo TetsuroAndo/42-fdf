@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/12/11 17:05:05 by teando           ###   ########.fr        #
+#    Updated: 2024/12/12 11:55:10 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,6 @@ SRCS 		:= \
 			key_hooks.c \
 		) \
 		$(addprefix render/, \
-			bresenham.c \
 			draw.c \
 			isometric.c \
 		) \
