@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/12 10:45:57 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 10:54:01 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (ft_dprintf(2, "Usage: %s <map_file.fdf>\n", av[0]), 1);
-	extension = strrchr(av[1], '.');
+	extension = ft_strrchr(av[1], '.');
 	if (extension == NULL || ft_strncmp(extension, ".fdf", 4) != 0)
 		return (ft_dprintf(2, "Usage: %s <map_file.fdf>\n", av[0]), 1);
 	fdf = init_fdf();
