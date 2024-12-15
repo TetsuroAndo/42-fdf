@@ -6,7 +6,7 @@
 /*   By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 23:21:56 by teando            #+#    #+#             */
-/*   Updated: 2024/12/12 11:27:59 by teando           ###   ########.fr       */
+/*   Updated: 2024/12/12 13:28:17 by teando           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ static t_fdf	*init_fdf(void)
 	fdf->z_scale = 1;
 	fdf->window.width = 3000;
 	fdf->window.height = 2000;
+	fdf->projection_mode = ISO;
+	fdf->rot_x = 0;
+	fdf->rot_y = 0;
+	fdf->rot_z = 0;
 	return (fdf);
 }
 

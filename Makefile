@@ -6,7 +6,7 @@
 #    By: teando <teando@student.42tokyo.jp>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 08:18:22 by teando            #+#    #+#              #
-#    Updated: 2024/12/12 11:55:10 by teando           ###   ########.fr        #
+#    Updated: 2024/12/15 15:37:55 by teando           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,8 +65,12 @@ $(NAME): $(LIBFT) $(MLX) $(OBJS)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(MLX):
+$(MLX): $(MLX_DIR)/.stamp
 	$(MAKE) -C $(MLX_DIR)
+
+$(MLX_DIR)/.stamp:
+	git clone https://github.com/42Paris/minilibx-linux.git $(MLX_DIR)
+	touch $@
 
 $(OUT_DIR)/%.o: $(ROOT_DIR)/%.c
 	@mkdir -p $(@D)
